@@ -1,0 +1,256 @@
+\documentclass{book}
+\usepackage[scheme=chinese,zihao=-4,heading=true]{ctex}
+\usepackage[margin=1.5in, includeheadfoot]{geometry}
+\usepackage{mathtools,amssymb,amsthm,mathrsfs}
+\usepackage{graphics}
+\usepackage{booktabs}
+\usepackage[numbers]{gbt7714}
+\usepackage{hyperref}
+\newtheorem{thm}{定理}[chapter]
+\newtheorem{lem}[thm]{引理}
+\newtheorem{cor}[thm]{推论}
+\newtheorem{defn}[thm]{定义}
+\newtheorem{rmk}[thm]{注记}
+\newtheorem{exmp}[thm]{例子}
+\newtheorem{exam}[thm]{试题}
+
+\makeatletter
+\newenvironment{abstract}{%
+    \if@twocolumn
+      \chapter*{\abstractname}%
+      \addcontentsline{toc}{chapter}{\protect\numberline{}\abstractname}%
+    \else
+      \small
+      \begin{center}%
+        {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
+      \end{center}%
+      \quotation
+      \addcontentsline{toc}{chapter}{\abstractname}%
+    \fi}
+    {\if@twocolumn\else\endquotation\fi}
+\makeatother
+
+\newenvironment{enabstract}%
+{\renewcommand{\abstractname}{Abstract}%
+\begin{abstract}}%
+{\end{abstract}}
+
+\newenvironment{cnabstract}
+{\renewcommand{\abstractname}{摘要}\begin{abstract}}%
+{\end{abstract}}
+
+% Define the problem environment
+\makeatletter
+\newcommand\cdotfill{%
+    \leavevmode\cleaders\hb@xt@.44em{\hss$\cdot$\hss}\hfill\kern\z@
+}
+\makeatletter
+\newcounter{problemcounter}
+\newenvironment{problem}[2]{
+    \refstepcounter{problemcounter}
+    \noindent\textbf{题 \theproblemcounter.}~#1~\cdotfill~(\,\textbf{#2}\,)\par
+}{}
+
+% Define the choice environment
+\usepackage{environ}
+\newlength{\choiceslen}
+
+\newif\ifshowcorrect
+\newcounter{choices}
+\newcommand{\choicefinal}[1]{%
+  \ifnum\value{choices}>0 \hfill\fi\egroup
+  \hspace{0pt}%
+  \hbox to\choiceslen
+  \bgroup
+  \stepcounter{choices}%
+  \ifcase#1\relax
+    (\Alph{choices})%
+  \else
+    \ifshowcorrect
+      \expandafter\underline
+    \fi
+    {(\Alph{choices})}%
+  \fi\space}
+\newcommand{\choicetemp}[1]{\stepcounter{choices}\space(\Alph{choices})\cr}
+
+\NewEnviron{choices}
+ {\setcounter{choices}{0}%
+  \let\choice\choicetemp
+  \settowidth{\choiceslen}{\vbox{\halign{##\hfil\cr\BODY\crcr}}}
+  \ifdim\choiceslen>.5\textwidth
+    \setlength{\choiceslen}{\textwidth}%
+  \else
+    \ifdim\choiceslen>.25\textwidth
+      \setlength{\choiceslen}{.5\textwidth}%
+    \else
+      \setlength{\choiceslen}{.25\textwidth}%
+    \fi
+  \fi
+  \let\choice\choicefinal
+  \setcounter{choices}{0}%
+  \begin{flushleft}
+  \bgroup\BODY\hfill\egroup
+  \end{flushleft}}
+  
+\begin{filecontents}{ref.bib}
+@incollection{einstein1976,
+  author        = {阿尔伯特·爱因斯坦},
+  key           = {a1 er3 bo2 te4  ai4 yin1 si1 tan3},
+  title         = {广义相对论的来源},
+  mark*         = {M},
+  translator*   = {许良英 and 李宝恒 and 赵中立 and 范岱年},
+  booktitle     = {爱因斯坦文集},
+  edition       = {1},
+  address       = {北京},
+  publisher     = {商务印书馆},
+  year          = {1976},
+  volume        = {1},
+  pages         = {319-323},
+  language*     = {chinese}
+}
+@book{born1981,
+  author        = {M. 玻恩},
+  title         = {爱因斯坦的相对论},
+  mark*         = {M},
+  edition       = {1},
+  translator    = {彭石安},
+  address       = {石家庄},
+  publisher     = {河北人民出版社},
+  year          = {1981},
+  pages         = {2},
+  language*     = {chinese}
+}
+\end{filecontents}
+
+
+\begin{document}
+\frontmatter
+\tableofcontents
+\newpage
+\begin{cnabstract}
+  这是一个简短的本科毕业论文写作模板。
+  
+  
+  \noindent\textbf{关键字}: 本科毕业论文, 写作模板, LaTeX
+\end{cnabstract}
+\newpage
+\begin{enabstract}
+  This is a short introduction of LaTeX template for undergraduate students.
+  
+  \noindent\textbf{Keywords}: Undergraduate thesis, writing template, LaTeX
+\end{enabstract}
+\mainmatter
+\chapter{引言}
+\section{研究背景}
+\chapter{定理与定义}
+\begin{defn}[调和函数]
+在数学中，一个实变量或复变量的实部与虚部的实数值函数$u$称为调和函数，如果它满足拉普拉斯方程$\Delta u=0$，即它的二阶混合导数在欧氏空间中的每个点都等于零。
+\end{defn}
+
+\begin{thm}[极大值原理]\label{thm:maximum-principle}
+  如果一个调和函数在某个区域内取得了最大值或最小值，那么它必定在该区域的边界上取得极值，而且仅仅取得这些极值。
+\end{thm}
+
+\begin{rmk}
+  定理~\ref{thm:maximum-principle}在实际中有广泛的应用，例如在热传导和电场分布的问题中。
+\end{rmk}
+\chapter{数学公式的使用}
+\section{独立一行的公式}
+\[
+ a^2+b^2=c^2
+\]
+\section{编号公式}
+\begin{equation}\label{eq:test}
+    \Gamma_{ij}^k=\frac{1}{2}g^{kl}
+    \left(
+    \frac{\partial}{\partial x^i}g_{lj}
+    +\frac{\partial}{\partial x^j}g_{il}
+    -\frac{\partial}{\partial x^l}g_{ij}
+    \right).
+\end{equation}
+上述公式\eqref{eq:test}就是Christoffel符号的计算公式。
+\section{多行公式}
+\[\begin{multlined}
+\sum_{n=1}^{\infty}\frac{1}{n^2}
+=1+\frac{1}{2^2}+\frac{1}{3^2}+\cdots\\
+=\frac{\pi^2}{6}.
+\end{multlined}\]
+\subsection{对齐}
+\begin{align*}
+    a&+b=c\\
+    ad&-bc=1.    
+\end{align*}
+\chapter{插图与表格的使用}
+\section{插图}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=2cm]{example-image-a}
+  \caption{Example image}\label{fig:example-a}
+\end{figure}
+在图\ref{fig:example-a}中，我们有...
+\section{表格}
+\begin{table}
+\centering
+\begin{tabular}{lcr}
+  \toprule
+  Left & Center & Right \\
+  \midrule
+  Data & Data & Data \\
+  \bottomrule
+\end{tabular}
+\caption{三线表格}
+\label{tab:table}
+\end{table}
+在表\ref{tab:table}中，我们有...
+\chapter{选择题}
+\begin{problem}{设$\alpha\in(0,\pi/2)$, $\beta\in(0,\pi/2)$, 而且$\tan\alpha= \frac{1+\sin\beta}{\cos\beta}$, 则}{B}
+  \begin{choices}
+    \choice0 $3\alpha-\beta=\pi/2$;
+    \choice1 $2\alpha-\beta=\pi/2$;
+    \choice0 $3\alpha+\beta=\pi/2$;
+    \choice0 $2\alpha+\beta=\pi/2$;
+  \end{choices}
+\end{problem}
+\chapter{嵌套列表}
+\begin{enumerate}
+  \item 数列极限定义
+  \item 函数极限定义
+    \begin{enumerate}
+      \item 自变量趋近有限值时函数的极限
+
+        设函数$𝑓(x)$在点$x_0$的某一去心邻域内有定义, 如果存在常数$a$, 对于任意给定的正数$\epsilon$, 都$\exists\delta>0$, 使不等式
+        \[
+          \lvert f(x)-a \rvert<\epsilon,
+        \]
+        在$0<\lvert x-x_0 \rvert<\delta$时都成立。
+    \end{enumerate}
+\end{enumerate}
+\chapter{参考文献的使用}
+\nocite{*}
+关于爱因斯坦发展的广义相对论，可以参考\cite{born1981}。
+
+ 
+\backmatter
+\appendix
+\chapter{后记}
+\chapter*{致谢}
+%\bibliography{ref}
+\begin{thebibliography}{99}
+  \bibitem[阿尔伯特·爱因斯坦(1976)]{einstein1976}
+  阿尔伯特·爱因斯坦.
+  \newblock 广义相对论的来源\allowbreak[M]//\allowbreak
+  \newblock 爱因斯坦文集: 第 1 卷.
+  \newblock 北京: 商务印书馆, 1976: 319-323.
+  \bibitem[玻恩M.(1981)]{born1981}
+  玻恩 M.
+  \newblock 爱因斯坦的相对论\allowbreak[M].
+  \newblock  彭石安, 译.
+  \newblock 石家庄: 河北人民出版社, 1981: 2.
+
+  \bibitem{Ji2015}
+  季峰. 高中数学思想方法的应用例说[J]. 中学课程辅导(教师教育), 2015(09):83.
+  \bibitem{ZhengHunag2024}
+  郑义富, 黄甫全. 数学的眼光：指向“三会”素养目标的数学抽象思想[J]. 数学教育学报, 2024, 33(01):59-63.
+
+\end{thebibliography}
+\end{document} 
