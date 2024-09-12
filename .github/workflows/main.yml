@@ -32,4 +32,4 @@ jobs:
           --vault '.' \
           --subFolder 'MathSoftwear' \
           --filterBy '前言.md' \
-          --title '数学软件讲义' MathSoftwear/out/
+          --title '数学软件讲义' ./MathSoftwear/out/
