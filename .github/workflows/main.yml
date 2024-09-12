@@ -1,52 +1,31 @@
-name: Deploy PDFs to GitHub Pages
+name: Export Markdown to PDF
 
 on:
   push:
-    branches:
-      - main
     paths:
-      - 'MathSoftwear/out/**'
-      - 'MathSoftwear/*.md'
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+      - 'MathSoftwear/**/*.md'
 
 jobs:
-  deploy:
+  export_to_pdf:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Git
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
 
-      - name: Create directory for deployment
-        run: mkdir -p publish
+    - name: Install obsidian-album
+      run: npm install -g obsidian-album
 
-      - name: Copy PDF files from MathSoftwear
-        run: |
-          find MathSoftwear/out -name "*.pdf" -exec cp {} publish/ \;
-
-      - name: List files in publish directory
-        run: ls -al publish
-
-      - name: Check Git status
-        run: git status
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./publish
-          publish_branch: gh-pages
+    - name: Run obsidian-album to export PDF
+      run: |
+        obsidian-album create \
+          --vault MathNotes \
+          --subFolder 'MathSoftwear' \
+          --filterBy '.md' \
+          --title '数学软件讲义' \
+          --output 'MathSoftwear/out/'
