@@ -23,7 +23,6 @@ jobs:
       run: npm install -g obsidian-album
 
     - name: Run obsidian-album help
-      run: npx obsidian-album --help
       run: npx obsidian-album create --help
 
     - name: Run obsidian-album to export PDF
