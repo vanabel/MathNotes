@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -24,18 +24,17 @@ jobs:
 
     - name: Run obsidian-album help
       run: npx obsidian-album create --help
-
     - name: Check output directory
       run: ls -al ./MathSoftwear/out/
 
     - name: Run obsidian-album to export PDF
       run: |
         npx obsidian-album create \
-        --verbose \
-        --vault '.' \
-        --subFolder 'MathSoftwear' \
-        --filterBy '前言.md' \
-        --title '数学软件讲义' ./MathSoftwear/out/MathSoftwear.pdf
+          --verbose \
+          --vault '.' \
+          --subFolder 'MathSoftwear' \
+          --filterBy '前言.md' \
+          --title '数学软件讲义' ./MathSoftwear/out/MathSoftwear.pdf
 
     - name: Check output directory
       run: ls -al ./MathSoftwear/out/
