@@ -30,5 +30,5 @@ jobs:
         npx obsidian-album create MathSoftwear_Export.pdf \
           --vault './MathNotes' \
           --subFolder 'MathSoftwear' \
-          --filterBy '.md' \
+          --filterBy '前言.md' \
           --title '数学软件讲义'
