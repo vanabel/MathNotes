@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'MathSoftwear/**/*.md'
+  workflow_dispatch:  # 允许手动触发工作流
 
 jobs:
   export_to_pdf:
