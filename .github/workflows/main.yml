@@ -41,6 +41,12 @@ jobs:
         run: |
           find MathSoftwear/out -name "*.pdf" -exec cp {} publish/ \;
 
+      - name: Upload PDFs as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: github-pages
+          path: publish
+
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         with:
