@@ -24,8 +24,9 @@ jobs:
 
     - name: Run obsidian-album to export PDF
       run: |
-        obsidian-album create 数学软件授课讲义.pdf \
+        obsidian-album create \
           --vault './MathNotes' \
           --subFolder 'MathSoftwear' \
           --filterBy '.md' \
-          --title '数学软件讲义'
+          --title '数学软件讲义' \ 
+          数学软件授课讲义.pdf
