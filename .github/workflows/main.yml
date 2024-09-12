@@ -26,9 +26,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
       - name: Create directory for deployment
         run: mkdir -p publish
 
@@ -36,7 +33,12 @@ jobs:
         run: |
           find MathSoftwear/out -name "*.pdf" -exec cp {} publish/ \;
 
+      - name: List files in publish directory
+        run: ls -al publish
+
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v4
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./publish
+          publish_branch: gh-pages
