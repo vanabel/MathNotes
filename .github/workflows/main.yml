@@ -28,6 +28,7 @@ jobs:
     - name: Run obsidian-album to export PDF
       run: |
         npx obsidian-album create \
+          --debug --verbose \
           --vault './MathNotes' \
           --subFolder 'MathSoftwear' \
           --filterBy '前言.md' \
