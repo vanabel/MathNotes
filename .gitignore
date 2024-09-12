@@ -32,4 +32,8 @@ __pycache__/
 *.bak
 *.tmp
 Thumbs.db
+
+# unrelated files
+
+AnalyticGeometry/
 LinearAlgebraII/

@@ -101,7 +101,12 @@
    let g:airline_symbols.dirty='⚡'
    ```
 3. 安装字体[DejaVu Sans Mono for Powerline.ttf](https://github.com/powerline/fonts/blob/master/DejaVuSansMono/DejaVu%20Sans%20Mono%20for%20Powerline.ttf)
-4. 安装`nvm-windows`， 并执行`nvm install 18`以安装`npm`和`node.js`
+4. 安装`nvm-windows`， 修改为国内淘宝源
+   ```bash
+   nvm npm_mirror https://npmmirror.com/mirrors/npm/
+   nvm node_mirror https://npmmirror.com/mirrors/node/
+   ```
+   然后执行`nvm use 20.16.0`以及`nvm install 20`以安装`npm`和`node.js`
 5. 执行`:PlugInstall` 如果一次不成功，可以多试几次。
 
 ## Vim使用Python

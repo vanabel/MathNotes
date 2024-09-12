@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - 'MathSoftwear/out/**'
+      - 'MathSoftwear/*.md"
+
 
 jobs:
   deploy:
