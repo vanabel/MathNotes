@@ -7,7 +7,7 @@
 3. 测试大语言模型：
    ```bash
    ollama run qwen2:1.5b
-   # 天空问什么是蓝色的？
+   # 天空为什么是蓝色的？
    ```
 ### 大语言模型配合Obsidian
 1. 安装插件`Copilot`, 并设置大语言模型`qwen2:1.5b`以及嵌入模型`nomic-embed-text`. 注意，在`general settings>Add Custom Model>Model Name (qwen2:1.5b)>Provider(ollama)>Add Model>Set Default to this new added model`, 不要忘记了**保存并重载**.

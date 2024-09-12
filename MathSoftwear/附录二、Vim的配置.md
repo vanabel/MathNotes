@@ -24,7 +24,7 @@
    ```
 
 ## Vim高级配置
-1. 安装插件管理`vim-plug`: 
+1. 安装插件管理[`vim-plug`](https://github.com/junegunn/vim-plug)以及`Git`（可能需要添加`git`到系统目录）: 
    ```bash
     iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`                   >>     ni $HOME/vimfiles/autoload/plug.vim -Force
    ```
@@ -125,7 +125,7 @@
 	  # 添加dll到vimrc
 	  # let &pythonthreedll='C:\Users\<username>\.pyenv\pyenv-win\versions\3.11.9-win32\python3.dll'
 	  # 执行: pyenv update
-	  pyenv install 2.7.6-win32
+	  pyenv install 2.7.9-win32
 	  pyenv install 3.11.9-win32
 	  pyenv global 3.11.9-win32
 	  python version
