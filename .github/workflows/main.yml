@@ -29,4 +29,4 @@ jobs:
           --subFolder 'MathSoftwear' \
           --filterBy '.md' \
           --title '数学软件讲义' \
-          --output 'MathSoftwear/out/'
+          'MathSoftwear/out/'
