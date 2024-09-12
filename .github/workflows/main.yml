@@ -24,10 +24,12 @@ jobs:
 
     - name: Run obsidian-album help
       run: npx obsidian-album --help
+      run: npx obsidian-album create --help
 
     - name: Run obsidian-album to export PDF
       run: |
         obsidian-album create \
+          -- verbose --debug \
           --vault './MathNotes' \
           --subFolder 'MathSoftwear' \
           --filterBy '.md' \
