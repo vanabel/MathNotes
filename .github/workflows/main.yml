@@ -33,7 +33,7 @@ jobs:
           --verbose \
           --vault '.' \
           --subFolder 'MathSoftwear' \
-          --filterBy '前言.md' \
+          --filterBy '.md' \
           --title '数学软件讲义' ./MathSoftwear/out/MathSoftwear.pdf
 
     - name: Check output directory
