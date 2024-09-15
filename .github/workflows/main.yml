@@ -1,4 +1,4 @@
-name: Export Markdown to PDF
+name: Server PDF files as HTML
 
 on:
   push:
@@ -14,29 +14,46 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+        #- name: Setup Node.js
+        #  uses: actions/setup-node@v4
+        #  with:
+        #    node-version: '20'
+
+        #- name: Install obsidian-album
+        #  run: npm install -g obsidian-album
+
+        #- name: Run obsidian-album help
+        #  run: npx obsidian-album create --help
+
+        #- name: Check output directory
+        #  run: ls -al ./MathSoftwear/out/
+
+        #- name: Run obsidian-album to export PDF
+        #  run: |
+        #    npx obsidian-album create \
+        #      --verbose \
+        #      --vault '.' \
+        #      --subFolder 'MathSoftwear' \
+        #      --filterBy '.md' \
+        #      --title '数学软件讲义' ./MathSoftwear/out/MathSoftwear.pdf
+
+        #- name: Check output directory
+        #  run: ls -al ./MathSoftwear/out/
+
+    - name: Install Python and dependencies
+      uses: actions/setup-python@v4
       with:
-        node-version: '20'
+        python-version: '3.x'
 
-    - name: Install obsidian-album
-      run: npm install -g obsidian-album
+          #- name: Install Python dependencies
+          #  run: |
+          #    python -m pip install --upgrade pip
+          #    pip install -r ./scripts/requirements.txt
 
-    - name: Run obsidian-album help
-      run: npx obsidian-album create --help
-    - name: Check output directory
-      run: ls -al ./MathSoftwear/out/
+    - name: Run PDF viewer generation script
+      run: python ./scripts/generate_pdf_viewer.py
 
-    - name: Run obsidian-album to export PDF
-      run: |
-        npx obsidian-album create \
-          --verbose \
-          --vault '.' \
-          --subFolder 'MathSoftwear' \
-          --filterBy '.md' \
-          --title '数学软件讲义' ./MathSoftwear/out/MathSoftwear.pdf
-
-    - name: Check output directory
+    - name: Check generated HTML
       run: ls -al ./MathSoftwear/out/
 
     - name: Deploy to GitHub Pages
