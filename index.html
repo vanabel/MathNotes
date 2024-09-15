@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Viewer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <style>
+    canvas {
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>PDF Files</h1>
+  <ul>
+<li><a href="?file=前言.pdf">前言</a></li>
+<li><a href="?file=课程大纲.pdf">课程大纲</a></li>
+<li><a href="?file=第一章、数学软件介绍.pdf">第一章、数学软件介绍</a></li>
+<li><a href="?file=第二章、Geogebra几何画板.pdf">第二章、Geogebra几何画板</a></li>
+<li><a href="?file=第三章、Mathematica 数学符号计算软件.pdf">第三章、Mathematica 数学符号计算软件</a></li>
+<li><a href="?file=第四章、LaTeX科学排版软件.pdf">第四章、LaTeX科学排版软件</a></li>
+<li><a href="?file=附录一、Obsidian笔记系统与文本编辑器Vim.pdf">附录一、Obsidian笔记系统与文本编辑器Vim</a></li>
+<li><a href="?file=附录二、Vim的配置.pdf">附录二、Vim的配置</a></li>
+<li><a href="?file=附录三、Git以及LLM.pdf">附录三、Git以及LLM</a></li>
+<li><a href="?file=附录四、常见问题解答.pdf">附录四、常见问题解答</a></li>
+<li><a href="?file=作业一、Vim常见操作.pdf">作业一、Vim常见操作</a></li>
+
+  </ul>
+
+  <div id="pdf-container"></div>
+
+  <script>
+    const pdfjsLib = window["pdfjs-dist/build/pdf"];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js";
+
+    // Get file from the query string (e.g., ?file=example.pdf)
+    const urlParams = new URLSearchParams(window.location.search);
+    const file = urlParams.get("file") || ""; // Default to no file
+
+    // Initialize the PDF document and render all pages
+    if (file) {
+      pdfjsLib.getDocument(file).promise.then((pdfDoc) => {
+        const pdfContainer = document.getElementById("pdf-container");
+
+        for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+          pdfDoc.getPage(pageNum).then((page) => {
+            let viewport = page.getViewport({ scale: 1.5 });
+            let canvas = document.createElement("canvas");
+            let ctx = canvas.getContext("2d");
+
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            let renderContext = {
+              canvasContext: ctx,
+              viewport: viewport
+            };
+
+            page.render(renderContext);
+            pdfContainer.appendChild(canvas);
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>
