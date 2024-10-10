@@ -1,24 +1,24 @@
 2024-09-08 23:48:55
-E:\MathNotes\MathSoftwear\作业一、Vim常见操作.md 
+作业一、Vim常见操作.md 
 2024-09-08 21:35:08
-E:\MathNotes\MathSoftwear\前言.md 
+前言.md 
 2024-09-08 21:35:00
-E:\MathNotes\MathSoftwear\数学软件课程讲义.md 
+数学软件课程讲义.md 
 2024-09-08 21:35:30
-E:\MathNotes\MathSoftwear\第一章、数学软件介绍.md 
+第一章、数学软件介绍.md 
 2024-09-08 21:35:50
-E:\MathNotes\MathSoftwear\第三章、Mathematica 数学符号计算软件.md 
+第三章、Mathematica 数学符号计算软件.md 
 2024-09-08 21:35:31
-E:\MathNotes\MathSoftwear\第二章、Geogebra几何画板.md 
+第二章、Geogebra几何画板.md 
 2024-09-08 21:35:59
-E:\MathNotes\MathSoftwear\第四章、LaTeX科学排版软件.md 
+第四章、LaTeX科学排版软件.md 
 2024-09-08 21:35:15
-E:\MathNotes\MathSoftwear\课程大纲.md 
+课程大纲.md 
 2024-09-08 21:36:02
-E:\MathNotes\MathSoftwear\附录一、Obsidian笔记系统与文本编辑器Vim.md 
+附录一、Obsidian笔记系统与文本编辑器Vim.md 
 2024-09-08 21:36:07
-E:\MathNotes\MathSoftwear\附录三、Git以及LLM.md 
+附录三、Git以及LLM.md 
 2024-09-08 21:36:05
-E:\MathNotes\MathSoftwear\附录二、Vim的配置.md 
+附录二、Vim的配置.md 
 2024-09-08 21:36:10
-E:\MathNotes\MathSoftwear\附录四、常见问题解答.md 
+附录四、常见问题解答.md 
