@@ -240,26 +240,20 @@ C=Rotate(B,pi/3,A)
 f=Segment(A,B)
 g=Segment(B,C)
 h=Segment(C,A)
-IterationList(
-Flatten(
-Zip(
-Zip(
-Sequence(
-Segment(Element(l1, u), Element(l1, u + 1)), u, 1, 4
-), l1, {
-  /*将顶点插入到三等分点序列*/
-  Insert(
-  /*得到三等分线段的顶点*/
-  Rotate(Point(ff, 2 / 3), -pi/3, Point(ff, 1 / 3)), 
-  /*生成线段ff上的三等分点序列，包括端点*/
-  Sequence(Point(ff, v), v, 0, 1, 1 / 3)
-  /*3表示插入在序列的第三个位置*/
-, 3)}
-), ff, f1)
-),
-f1, {{f, g, h}}, n) 
+/*得到线段f的三等分点序列*/
+equiSepSeq=Sequence(Point(f, v), v, 0, 1, 1 / 3) 
+/*插入Koch曲线的顶点*/
+kochSeqf=Insert(Rotate(Point(f, 1 / 3), π / 3, Point(f, 2 / 3)), equiSepSeq, 3)
+/*得到线段f的Koch曲线:一次迭代*/
+l1=Zip(Sequence(Segment(Element(lis, u), Element(lis, u + 1)), u, 1, 4), lis, {kochSeqf})
+/*注意这里的l1作为结果是从线段f构造出了四段线段（Koch曲线）*/
+/*迭代次数滑块*/
+n=Slider(2,5,1)
+/*想一想，下面这个迭代为什么不正确？*/
+IterationList(Flatten(Zip(Sequence(Segment(Element(lis, u), Element(lis, u + 1)), u, 1, 4), lis, {Insert(Rotate(Point(ff, 1 / 3), π / 3, Point(ff, 2 / 3)), Sequence(Point(ff, v), v, 0, 1, 1 / 3), 3)})), ff, {{f}}, n)
+/*这是因为，迭代一次后的结果为四个线段构成的列表{f1,f1,f1,f1}, 因此再次迭代的时候，ff变成了这个列表，而我们希望是一个线段构成的列表(类似{f1}这样)，因此我们需要再次使用Zip映射变量到列表中的元素*/
 /*最后一个迭代完整代码如下*/
-Element( IterationList( Flatten( Zip( Zip( Sequence( Segment( Element( l3, u), Element( l3, u+1)), u, 1, 4), l3, {Insert( Rotate( Point( ff, 2/3), -pi/3, Point( ff, 1/3)), Sequence( Point( ff, v), v, 0, 1, 1/3), 3)}), ff, f1)), f1, {{f, g, h}}, n), n)
+Element( IterationList( Flatten( Zip( Zip( Sequence( Segment( Element( lis, u), Element( lis, u+1)), u, 1, 4), lis, {Insert( Rotate( Point( ff, 2/3), -pi/3, Point( ff, 1/3)), Sequence( Point( ff, v), v, 0, 1, 1/3), 3)}), ff, f1)), f1, {{f, g, h}}, n), n)
 ```
 
 ![Koch曲线](figures/Koch.png)
@@ -296,9 +290,9 @@ Element( IterationList( Flatten( Zip( Zip( Sequence( Segment( Element( l3, u), E
 
 ---
 ### 作业
-1. 自行对勾股数等迭代图形涂色。
+1. 自行对勾股树等迭代图形涂色。
 2. 你能想到涂色的其他应用吗？
-3. (必做!!)**大作业**：对 Julia 集
+3. (必做!!)**大作业**：对 Julia 集使用几何画板实现。
 
 ---
 

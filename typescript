@@ -1,0 +1,26 @@
+Script started on Mon Oct 21 10:39:25 2024
+^C[1m[7m%[27m[1m[0m                                                                                                                                  ]7;file://VansMBA.local/Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes[0m[27m[24m[Jvanabel@VansMBA MathNotes % [K[?2004hccd scripts[1m/[0m[0m [?2004l
+[1m[7m%[27m[1m[0m                                                                                                                                  ]7;file://VansMBA.local/Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/scripts[0m[27m[24m[Jvanabel@VansMBA scripts % [K[?2004hlls[?2004l
+ManageMarkdownCreationTimes.bat	ManageMarkdownCreationTimes.sh	generate_pdf_viewer.py
+[1m[7m%[27m[1m[0m                                                                                                                                  ]7;file://VansMBA.local/Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/scripts[0m[27m[24m[Jvanabel@VansMBA scripts % [K[?2004hMManage    M  ../ManageMarkdownCreationTimes.sh[1m [0m[0m [?2004l
+Enter the directory path (e.g., /path/to/markdown/files): ../Math	       /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear
+Usage: 
+
+To store creation times: script.sh store
+To restore creation times: script.sh restore
+[1m[7m%[27m[1m[0m                                                                                                                                  ]7;file://VansMBA.local/Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/scripts[0m[27m[24m[Jvanabel@VansMBA scripts % [K[?2004h./ManageMarkdownCreationTimes.sh[1C restore[?2004l
+Enter the directory path (e.g., /path/to/markdown/files): /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear
+Restoring creation times...
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/作业一、Vim常见操作.md
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/前言.md
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/数学软件课程讲义.md
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/第一章、数学软件介绍.md
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/第三章、Mathematica 数学符号计算软件.md
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/第二章、Geogebra几何画板.md
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/第四章、LaTeX科学排版软件.md
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/课程大纲.md
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/附录一、Obsidian笔记系统与文本编辑器Vim.md
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/附录三、Git以及LLM.md
+Restored creation time for /Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/MathSoftwear/附录二、Vim的配置.md
+Creation times restored!
+[1m[7m%[27m[1m[0m                                                                                                                                  ]7;file://VansMBA.local/Users/vanabel/SynologyDrive/Workspace/Projects/MathNotes/scripts[0m[27m[24m[Jvanabel@VansMBA scripts % [K[?2004h

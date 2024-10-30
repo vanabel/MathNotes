@@ -138,7 +138,7 @@ toc: 'true'
     ```
 
     ![[M74.png]]
-17. 寻找
+17. 寻找Grothendieck
     * 图片来源: http://farm1.staticflickr.com/35/103000621_bcaee4a234.jpg
    	```mathematica
 	Grothendieck = Import["http://farm1.staticflickr.com/35/103000621_bcaee4a234.jpg"]
@@ -162,8 +162,9 @@ toc: 'true'
 	g=Series[f[x], {x, -1, 6}];
 	Print[Normal[g]]
 	```
-## 基础知识
-### 原子(atom)
+## 作为编程语言的Mathematica
+### 基础知识
+#### 原子(atom)
  **以下三类对象被称为原子（Atom）**：
 * **符号（Symbol）**：由字母和数字组成的有限序列，其中数字不能作为起始字符。符号可以理解为变量的名称。例如，`x1` 是一个符号（变量名）。
 * **数字（Number）**：包括整数、有理数、实数和复数，通常作为变量的值。例如，`42`、`3/7`、`π` 和 `2 + 3I`。
@@ -172,15 +173,49 @@ toc: 'true'
 	x1=2+3*I;
 	Print[Sin[x1]//N];
 	```
-### 内建符号
+
+#### 内建符号
  Mathematica系统内建符号的特点：
 * **Camel命名法**：符号通常由第一个字母大写的单词组成，例如：True、False、FactorInteger、SetAttributes。
 * **判断函数命名**：用于判断的函数名末尾通常带有“Q”，如：EvenQ、PrimeQ、MatchQ。
 * **人名命名**：某些符号以人名为基础，格式为人名加符号名，例如：EulerGamma、BesselJ、DiracDelta。
 
 因此，在命名自定义符号时，建议避免与内建符号冲突。一种有效的方法是使用小写字母开头的camel命名法。
+### 关系运算与逻辑运算符
+#### 关系运算
+1. 大于、等于、小于、大于等于、小于等于、不等于、形式上完全相同（类型相同）、形式上不完全相同
+   ```mathematica
+Print[{1 < Sin[1], 1 > Sin[1], 1 == Sin[1], 1 != Sin[1], 
+ 1 <= Min[1, Sin[1]], 1 >= Min[1, Sin[1]], 1 === 1.0, 1 =!= 1.0}]  
+   ```
 
-### 条件与循环	
+1. 属于域、属于列表
+   ```mathematica
+   Print[{1 \[Element] Integers, 1.01 \[Element] Integers, 
+ Pi \[Element] Reals, Pi \[Element] Rationals, 
+ 2 + 3 I \[Element] Complexes, MemberQ[{1, 3, 5}, PrimePi[2]], 
+ MemberQ[{1, 3, 5}, PrimePi[4]]}]
+   ```
+1. 布尔运算
+   ```mathematica 
+   Print[{Boole[True], Boole[False], BooleanQ[True], BooleanQ[1]}]
+   ```
+#### 逻辑运算符 
+1. 与(And)、或(Or)、非(Not)
+   ```mathematica 
+   ClearAll["Global`*"]
+   {p,q,r}={False,True,True};
+   Print[{p && q, p || q,  !p}]
+   ```
+2. 异或(Xor)、同或(Xnor)、与非(Nand)、或非(Nor)、蕴含(Implies)、等价(Equivalent)
+   ```mathematica 
+   ClearAll["Global`*"]
+   {p,q,r}={False,True,True};
+   Print[{Xor[p, q], p \[Xor] q, Xnor[p, q], p \[Xnor] q, Nand[p, q], 
+ p \[Nand] q, Nor[p, q], p \[Nor] q, Implies[p, q], p \[Implies] q, 
+ Equivalent[p, q], p \[Equivalent] q}]
+   ```
+#### 条件
 
 1. 条件判断
 	```mathematica
@@ -196,9 +231,27 @@ toc: 'true'
 	]
 	rollDie[]  (* Call the function to simulate rolling a die *)
 	```
+    扩展绝对值函数到复数(模长)
+    ```mathematica 
+    abs[x_]:=If[x>0,x,-x,Sqrt[Re[x]^2+Im[x]^2]]
+    Print[{abs[-3], abs[3.14], abs[3+4I]}]
+    ```
   
 2. 多重条件判断
-	```mathematica
+   使用`which`得到分段函数
+   ```mathematica
+   unitSin[x_] := Which[x < -Pi/2, -1, x > Pi/2, 1, True, Sin[x]]
+   unitsin=Plot[unitSin[x], {x, -3, 3}];
+   Export["unitSin.png", unitsin];
+   ```
+   ![[unitSin.png]]
+   使用`Piecewise`函数，也可以得到完全一样的图形
+   ```mathematica 
+   unitSin[x_] := Piecewise[{{-1, x < -Pi/2}, {1, x > Pi/2}}, Sin[x]]
+   Plot[unitSin[x], {x, -3, 3}]
+   ```
+   猜数游戏
+   ```mathematica
 	numberGuessingGame[] := Module[{target = RandomInteger[{1, 100}], guess, difference},
 	  Print["Welcome to the Number Guessing Game! Guess a number between 1 and 100."];
 	  
@@ -239,23 +292,196 @@ toc: 'true'
     ]
     ```
 
-3. 循环
-   ```mathematica
-   countdownGame[start_Integer] := Module[{event, i},
-     Print["Starting countdown from ", start, "!"];
-     
-     For[i = start, i > 0, i--,
-       event = RandomChoice[{"Nothing happens.", "You find a treasure!", "A monster appears!", "You gain a bonus point!"}];
-       Print[i, ": ", event];
-       Pause[1];  (* Pause for a second for dramatic effect *)
-     ];
-     
-     Print["Blast off!"];
-   ]
+### 循环
+   1. `For`循环
+   根据公式$\frac{\pi}{4}=1-\frac{1}{3}+\frac{1}{5}-\frac{1}{7}+\frac{1}{9}+\cdots$, 求$\pi$的近似值.
+      ```mathematica 
+      apprxPi[eps_] := Module[{n = Floor[1/eps], i, sum = 0.0, sign = 1},
+       For[i = 1, i <= n, i += 2,
+        sum += sign/i;
+        sign = -sign;
+       ];
+       N[NumberForm[4.0*sum, Floor[Log10[n]] + 1]]
+      ]
+      Print[apprxPi[10^-6]]
+     ```
+     利用`For`循环给出一个倒计时游戏。
+     ```mathematica
+     countdownGame[start_Integer] := Module[{event, i},
+       Print["Starting countdown from ", start, "!"];
+       
+       For[i = start, i > 0, i--,
+         event = RandomChoice[{"Nothing happens.", "You find a treasure!", "A monster appears!", "You gain a bonus point!"}];
+         Print[i, ": ", event];
+         Pause[1];  (* Pause for a second for dramatic effect *)
+       ];
+       
+       Print["Blast off!"];
+     ]
+     (* Start countdown from 10 *)
+     countdownGame[10]
+     ```
+   2. `While`循环
+      计算一个十进制数的$p$进制表示.
+      ```mathematica
+      positiveIntegerQ[n_] := n \[Element] PositiveIntegers
+      Print[positiveIntegerQ /@ {-1, 0, 3}]
+      toPnary[num_?positiveIntegerQ, p_?positiveIntegerQ] := 
+       Module[{i, bin = {}, r = num},
+        While[r > 0,
+         i = Mod[r, p];
+         bin = Prepend[bin, i];
+         r = Floor[r/p];
+         ];
+        bin]
+      Print[toPnary[9, 2]]
+      ```
+      辗转相除法求最大公约数
+      ```mathematica 
+      gcd[m_, n_] := Module[{r = m, s = n, t},
+      While[s != 0,
+       (*Print[{r,s}];*)
+       t = Mod[r, s];
+       r = s;
+       s = t;
+       ];
+      r]
+    Print[gcd[10, 8]]
+      ```
+  3. `NestWhile`嵌套循环列表
+     求正整数$N$的下一个素数。
+     ```mathematica
+     positiveIntegerQ[n_] := n \[Element] PositiveIntegers
+     nextPrime[n_?positiveIntegerQ] := 
+      NestWhile[# + 1 &, n + 1, ! PrimeQ[#] &]
+     Print[nextPrime /@ {5, 9, 888}]
+     ```
+     猫映射：天才数学家Arnold提出一种映射，对 $a,b,N\in\mathbb{N}^+$, 以及任意的 $(x_0,y_0)\in \mathbb{N}^+\times \mathbb{N}^+$, 若定义
+     $$
+      \begin{pmatrix}
+        x_{n+1}\\ y_ {n+1}
+        \end{pmatrix}=
+      \begin{pmatrix}
+        1   &   a \\
+        b& a b+1
+        \end{pmatrix}
+        \begin{pmatrix}
+        x_n \\
+      y_n 
+    \end{pmatrix}\pmod N
+     $$
+     可以证明，该映射一定是周期的。
+     ```mathematica 
+     positiveIntegerQ[n_] := n \[Element] PositiveIntegers
+     catMap[{x0_?positiveIntegerQ, 
+        y0_?positiveIntegerQ}, {a_?positiveIntegerQ, b_?positiveIntegerQ}, 
+       n_?positiveIntegerQ] := Module[
+       {max = 1},
+       NestWhileList[
+        Mod[{#[[1]] + a  #[[2]], b  #[[1]] + (a  b + 1) #[[2]]}, n] &, {x0,
+          y0}, max++ < 31 &]
+       ]
+     catMapList = catMap[{2, 3}, {3, 7}, 15]
+     Position[catMapList, {2, 3}]
+     Graphics[{{PointSize[Large], Point[catMapList]}, 
+       Map[Arrow, Partition[catMapList, 2, 1]]}]
+       ```
+### 函数、表达式与列表
+#### 函数的定义
+1. 使用模式匹配加延迟赋值
+```mathematica
+f[x_]:=x^2
+g[x_,y_]:= Sin[x] Cos[y]
+(*函数的使用*)
+Print[f[2]]
+Print[g[2,3]]
+```
+2. 匿名函数
+```mathematica
+(*完整形式*)
+f1=Function[x,x^2]
+(*简写形式*)
+f2=#^2&;
+g1=Function[{x,y},Sin[x]Cos[y]]
+g2=Sin[#1]Cos[#2]&;
+(*函数的使用*)
+Print[f1[2]];
+Print[f2[2]];
+Print[g1[2,3]];
+Print[g2[2,3]];
+```
+#### 函数的应用举例
+- 求不大于正整数$n$的所有素数的和。
+```mathematica
+IsPrime[n_] := 
+ Module[{max = Floor[Sqrt[n]] + 1, i = 2}, 
+  While[i < max && Mod[n, i] != 0, i++]; n >= 2 && i >= max]
+Print[Range[20]]
+Print[IsPrime /@ Range[20]]
+PrimeSum[n_]:=Module[{s = 0}, Do[If[IsPrime[i], s += i], {i, n}]; Print[s]]
+PrimeSum[10]
+```
+我们也可以利用Mathematica内建函数来实现。`PrimePi[n]`给出不超过`n`的素数个数；`Prime[n]`给出第`n`个素数。
+```mathematica
+Print[Plus @@ Prime /@ Range@PrimePi[#] &[10]]
+```
+由于Mathematica内部存储了前10亿个素数的素数表，故后者运行速度更快。
+#### 内建函数的简写形式
+```mathematica
+FullForm[Plus @@ Prime /@ Range@PrimePi[#] &]
+```
+可见，`@@`就是`Apply`， `/@`就是`Map`, `f@x`相当于`f[x]`.
+#### 函数式编程
+我们在使用MMA时，习惯于用内建函数来替代很多可能很复杂的程序。在计算机“理解”这些表达式的时候，首先就是将表达式翻译成语法树。事实上，我们可将所有的表达式都视为一个图论中的树（函数即节点、自变量即分支）：
+```mathematica
+Export["TreeFormofExpression.png", TreeForm[(a + b^n)/z == x]]
+```
+![[TreeFormofExpression.png]]
+而MMA内部也是这样来理解表达式的。
+```mathematica
+Export["FullFormofExpression.png", FullForm[(a + b^n)/z == x]]
+```
+![[FullFormofExpression.png]]
+因此，什么是一个MMA的表达式呢？
+> 在 Mathematica 中，满足如下条件的对象就叫做表达式(expression):
+> 1. 原子对象是表达式；
+> 2. 若 $F$、$X_1$、$X_2$、$\ldots$、$X_n$ 是表达式，则 $F[X_1, X_2, \ldots, X_n]$也是表达式。
 
-   countdownGame[10]  (* Start countdown from 10 *)
-   ```
+Mathematica 中的一切对象都是表达式，一个 Mathematica 程序就是一个表达式。这一事实如此地重要，以至于有人将它称为 Mathematica 的第一原理:
+> Mathematica 第一原理：万物皆表(达式).
+ 
+ 常见运算符的完整形式 
+```mathematica
+Export["FullFormofCommenOperator.png", 
+FullForm /@ {a + b, a - b, a*b, a/b, a^b,
+a == b, a != b, a < b, 
+  a <= b, a > b, a >= b, a && b, a || b}//TableForm]
+```
 
+![[FullFormofCommenOperator.png]]
+```mathematica
+Export["EpsilonDelta.png",ForAll[\[Epsilon], \[Epsilon] > 0, 
+  Exists[\[Delta], \[Delta] > 0, 
+   ForAll[x, Abs[x - Subscript[x, 0]] < \[Delta], 
+    Abs[f[x] - f[Subscript[x, 0]]] < \[Epsilon]]]] // TraditionalForm]
+```
+![[EpsilonDelta.png]]
+那么Mathematica如何计算表达式呢？我们通过计算$\int_0^{2\pi}\sin^2(x)dx$来说明。
+```mathematica
+res=Trace[(#2 - #1) & @@ (Integrate[Sin[x]^2, x] /. {x -> #} & /@ {0, 
+     2 Pi})]
+Export["TraceIngtegrate.png", StandardForm[res]]
+```
+![[TraceIngtegrate.png]]
+仔细分析这个过程可以发现, 在每一步里我们做的其实都是下面这两件事:
+1. 从待计算对象中识别一些可化简的模式;
+2. 将识别出的模式用已知的规则进行化简.
+
+Mathematica 也是这样进行计算的, 其中第一步叫做模式匹配, 第二步叫做规则代入. 基于模式和规则的计算模型在数理逻辑或者计算机科学中叫重写系统(rewriting system).
+> 	Mathematica 第二原理: 计算即重写.
+
+事实上，我们后面就会发现：Mathematica语言和其它**函数式编程语言**拥有一个共同的原理，那就是把**函数视为最基本的、可操作的对象**. Mathematica 的这一特征是如此重要, 以至于我们要将它总结为第零原理.
+> 	Mathematica 第零原理: 重要的是函数, 而非变量.
 ## 参考资料
 - 清华刘思齐: [链接](https://cloud.tsinghua.edu.cn/d/e26004d487914c4f9f4e/)
 - Wolfram U: [链接](https://www.wolfram.com/wolfram-u/?source=nav) 可以获得证书，有你名字
