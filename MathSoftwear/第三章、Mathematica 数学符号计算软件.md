@@ -293,99 +293,109 @@ Print[{1 < Sin[1], 1 > Sin[1], 1 == Sin[1], 1 != Sin[1],
     ```
 
 ### 循环
-   1. `For`循环
-   根据公式$\frac{\pi}{4}=1-\frac{1}{3}+\frac{1}{5}-\frac{1}{7}+\frac{1}{9}+\cdots$, 求$\pi$的近似值.
-      ```mathematica 
-      apprxPi[eps_] := Module[{n = Floor[1/eps], i, sum = 0.0, sign = 1},
-       For[i = 1, i <= n, i += 2,
-        sum += sign/i;
-        sign = -sign;
-       ];
-       N[NumberForm[4.0*sum, Floor[Log10[n]] + 1]]
-      ]
-      Print[apprxPi[10^-6]]
-     ```
-     利用`For`循环给出一个倒计时游戏。
-     ```mathematica
-     countdownGame[start_Integer] := Module[{event, i},
-       Print["Starting countdown from ", start, "!"];
-       
-       For[i = start, i > 0, i--,
-         event = RandomChoice[{"Nothing happens.", "You find a treasure!", "A monster appears!", "You gain a bonus point!"}];
-         Print[i, ": ", event];
-         Pause[1];  (* Pause for a second for dramatic effect *)
-       ];
-       
-       Print["Blast off!"];
-     ]
-     (* Start countdown from 10 *)
-     countdownGame[10]
-     ```
-   2. `While`循环
-      计算一个十进制数的$p$进制表示.
-      ```mathematica
-      positiveIntegerQ[n_] := n \[Element] PositiveIntegers
-      Print[positiveIntegerQ /@ {-1, 0, 3}]
-      toPnary[num_?positiveIntegerQ, p_?positiveIntegerQ] := 
-       Module[{i, bin = {}, r = num},
-        While[r > 0,
-         i = Mod[r, p];
-         bin = Prepend[bin, i];
-         r = Floor[r/p];
-         ];
-        bin]
-      Print[toPnary[9, 2]]
-      ```
-      辗转相除法求最大公约数
-      ```mathematica 
-      gcd[m_, n_] := Module[{r = m, s = n, t},
-      While[s != 0,
-       (*Print[{r,s}];*)
-       t = Mod[r, s];
-       r = s;
-       s = t;
-       ];
-      r]
-    Print[gcd[10, 8]]
-      ```
-  3. `NestWhile`嵌套循环列表
-     求正整数$N$的下一个素数。
-     ```mathematica
-     positiveIntegerQ[n_] := n \[Element] PositiveIntegers
-     nextPrime[n_?positiveIntegerQ] := 
-      NestWhile[# + 1 &, n + 1, ! PrimeQ[#] &]
-     Print[nextPrime /@ {5, 9, 888}]
-     ```
-     猫映射：天才数学家Arnold提出一种映射，对 $a,b,N\in\mathbb{N}^+$, 以及任意的 $(x_0,y_0)\in \mathbb{N}^+\times \mathbb{N}^+$, 若定义
-     $$
-      \begin{pmatrix}
-        x_{n+1}\\ y_ {n+1}
-        \end{pmatrix}=
-      \begin{pmatrix}
-        1   &   a \\
-        b& a b+1
-        \end{pmatrix}
-        \begin{pmatrix}
-        x_n \\
-      y_n 
-    \end{pmatrix}\pmod N
-     $$
-     可以证明，该映射一定是周期的。
-     ```mathematica 
-     positiveIntegerQ[n_] := n \[Element] PositiveIntegers
-     catMap[{x0_?positiveIntegerQ, 
-        y0_?positiveIntegerQ}, {a_?positiveIntegerQ, b_?positiveIntegerQ}, 
-       n_?positiveIntegerQ] := Module[
-       {max = 1},
-       NestWhileList[
-        Mod[{#[[1]] + a  #[[2]], b  #[[1]] + (a  b + 1) #[[2]]}, n] &, {x0,
-          y0}, max++ < 31 &]
-       ]
-     catMapList = catMap[{2, 3}, {3, 7}, 15]
-     Position[catMapList, {2, 3}]
-     Graphics[{{PointSize[Large], Point[catMapList]}, 
-       Map[Arrow, Partition[catMapList, 2, 1]]}]
-       ```
+#### `For`循环
+根据公式$\frac{\pi}{4}=1-\frac{1}{3}+\frac{1}{5}-\frac{1}{7}+\frac{1}{9}+\cdots$, 求$\pi$的近似值.
+  ```mathematica 
+  apprxPi[eps_] := Module[{n = Floor[1/eps], i, sum = 0.0, sign = 1},
+   For[i = 1, i <= n, i += 2,
+    sum += sign/i;
+    sign = -sign;
+   ];
+   N[NumberForm[4.0*sum, Floor[Log10[n]] + 1]]
+  ]
+  Print[apprxPi[10^-6]]
+ ```
+ 利用`For`循环给出一个倒计时游戏。
+ ```mathematica
+ countdownGame[start_Integer] := Module[{event, i},
+   Print["Starting countdown from ", start, "!"];
+   
+   For[i = start, i > 0, i--,
+     event = RandomChoice[{"Nothing happens.", "You find a treasure!", "A monster appears!", "You gain a bonus point!"}];
+     Print[i, ": ", event];
+     Pause[1];  (* Pause for a second for dramatic effect *)
+   ];
+   
+   Print["Blast off!"];
+ ]
+ (* Start countdown from 10 *)
+ countdownGame[10]
+ ```
+#### `While`循环
+  计算一个十进制数的$p$进制表示.
+  ```mathematica
+  positiveIntegerQ[n_] := n \[Element] PositiveIntegers
+  Print[positiveIntegerQ /@ {-1, 0, 3}]
+  toPnary[num_?positiveIntegerQ, p_?positiveIntegerQ] := 
+   Module[{i, bin = {}, r = num},
+    While[r > 0,
+     i = Mod[r, p];
+     bin = Prepend[bin, i];
+     r = Floor[r/p];
+     ];
+    bin]
+  Print[toPnary[9, 2]]
+  ```
+  辗转相除法求最大公约数
+  ```mathematica 
+  gcd[m_, n_] := Module[{r = m, s = n, t},
+  While[s != 0,
+   (*Print[{r,s}];*)
+   t = Mod[r, s];
+   r = s;
+   s = t;
+   ];
+  r]
+Print[gcd[10, 8]]
+  ```
+#### `NestWhile`嵌套循环列表
+ 求正整数$N$的下一个素数。
+ ```mathematica
+ positiveIntegerQ[n_] := n \[Element] PositiveIntegers
+ nextPrime[n_?positiveIntegerQ] := 
+  NestWhile[# + 1 &, n + 1, ! PrimeQ[#] &]
+ Print[nextPrime /@ {5, 9, 888}]
+ ```
+ 猫映射：天才数学家Arnold提出一种映射，对 $a,b,N\in\mathbb{N}^+$, 以及任意的 $(x_0,y_0)\in \mathbb{N}^+\times \mathbb{N}^+$, 若定义
+ $$
+  \begin{pmatrix}
+    x_{n+1}\\ y_ {n+1}
+    \end{pmatrix}=
+  \begin{pmatrix}
+    1   &   a \\
+    b& a b+1
+    \end{pmatrix}
+    \begin{pmatrix}
+    x_n \\
+  y_n 
+\end{pmatrix}\pmod N
+ $$
+ 可以证明，该映射一定是周期的。
+ ```mathematica 
+ positiveIntegerQ[n_] := n \[Element] PositiveIntegers
+ catMap[{x0_?positiveIntegerQ, 
+    y0_?positiveIntegerQ}, {a_?positiveIntegerQ, b_?positiveIntegerQ}, 
+   n_?positiveIntegerQ] := Module[
+   {max = 1},
+   NestWhileList[
+    Mod[{#[[1]] + a  #[[2]], b  #[[1]] + (a  b + 1) #[[2]]}, n] &, {x0,
+      y0}, max++ < 31 &]
+   ]
+ catMapList = catMap[{2, 3}, {3, 7}, 15]
+ Position[catMapList, {2, 3}]
+ Graphics[{{PointSize[Large], Point[catMapList]}, 
+   Map[Arrow, Partition[catMapList, 2, 1]]}]
+```
+#### `Do`循环
+练习：使用循环给出连分数展开$\pi$的序列.
+```mathematica
+num = Pi;
+L = {};
+Do[AppendTo[L, Floor[num]]; num = 1/(num - Floor[num]) , {i, 5}]
+Print[L]
+(*验证*)
+ContinuedFraction[Pi, 5]
+``` 
 ### 函数、表达式与列表
 #### 函数的定义
 1. 使用模式匹配加延迟赋值
@@ -482,6 +492,251 @@ Mathematica 也是这样进行计算的, 其中第一步叫做模式匹配, 第�
 
 事实上，我们后面就会发现：Mathematica语言和其它**函数式编程语言**拥有一个共同的原理，那就是把**函数视为最基本的、可操作的对象**. Mathematica 的这一特征是如此重要, 以至于我们要将它总结为第零原理.
 > 	Mathematica 第零原理: 重要的是函数, 而非变量.
+
+#### 表达式
+回忆, 一个表达式或者是原子, 或者是形如`F[X1, X2, ... , Xn]` 的函数. 我们称`F`为表达式的头(Head).
+```mathematica
+Print[Head /@ {1, 1/2, True, "number", a + b, a - b, a*b, 
+  a/b, (f + g)[x1, x2, x3]}]
+```
+这里`/@`的全名叫`Map`， 即将函数作用到后面的各个变量，而不用重复写函数名。
+猜猜下面的例子的输出是什么？
+```mathematica
+Print[h /@ k[x1, x2, x3]]
+```
+从上面的例子我们发现，符号的头总是`Symbol`; 数字的头则依赖于它的类型，结果可以是`Integer`、`Rational`、`Real` 和 `Complex`; 字符串的头总是`String`; 图片的头是`Image`等等.
+
+除了表达式的头，常常一个函数的参数也需要取出来进行操作. 它是一些表达式构成的序列，是没有头的. 但是在 Mathematica 里所有的表达式都必须有头, 所以为了处理这种无头表达式，Mathematica 引入表（List）这个概念，然后规定所有的无头表达式的头都是`List`.
+```mathematica
+ex = f[x1, x2, x3];
+Print[List @@ ex]
+```
+List 本身也是 Mathematica 的一个内部函数，它的作用是将输入的表达式序列做成一个表. 表达式 `x1, x2, ... , xn` 构成的表记为 `{x1, x2,..., xn}`.
+```mathematica
+Print[List[1, 2, 3]]
+```
+
+上面取函数`f`的参数的操作相当于将头`f`替换为了头`List`, 这里`@@`的全名是`Apply`. 上述换头术也是非常常用的操作.
+```mathematica
+Print[Apply[g, h[x1, x2, x3]]]
+Print[g@@h[x1,x2,x3]]
+```
+
+有时，我们希望将一个函数的参数作为参数传给另一个函数，这时候上述换头得到的表就多了一层花括号(`{`和`}`), 如果不想要这层花括号, 就要用 `Sequence`换头.
+```mathematica
+ex = h[1, 2, 3];
+seq = Sequence @@ ex;
+lst = List @@ ex;
+Print[seq]
+Print[lst]
+
+Print[f[seq]]
+Print[f[lst]]
+Print[f @@ lst]
+Print[f[seq, lst, 4, 5, 6]]
+```
+除了用 `Head` 和 `Apply` 以外，Mathematica 还提供了另一种访问复合表达式内部表达式的方法，即系统内建函数 `Part`，简写形式为 `[[...]]`.
+```mathematica
+ex = f[x1, x2, x3];
+Print[{ex[[0]], ex[[1]], ex[[2]], ex[[3]]}]
+```
+对于嵌套表达式，我们可以多次取`Part`:
+```mathematica
+ex = f[a, g[b, c], h[d, k[e, i], j]];
+Print[ex[[3]][[2]][[2]]]
+(*效果一样*)
+Print[ex[[3,2,2]]]
+```
+Part 还有很多其它的变体，详见帮助系统. 例如：
+```mathematica
+ex = f[a, g[b, c], h[d, k[e, i], j]];
+Print[ex[[-1, -2, -1]]]
+Print[ex[[{2, 3}]]]
+Print[ex[[1 ;; 2]]]
+Print[ex[[1 ;; 3 ;; 2]]]
+```
+对一个表达式，它有两个重要的量，即长度和深度:
+```mathematica 
+ex = f[a, g[b, c], h[d, k[e, i], j]];
+Print[Length[ex]]
+Print[Depth[ex]]
+```
+此外，对最常用的一些`Part`有内建函数：
+```mathematica
+Print[Function[op, op[f[x1, x2, x3, x4]]] /@ {First, Last, Rest, Most}]
+Print[Take[f[x1, x2, x3, x4], {2, 3}]]
+Print[Drop[f[x1, x2, x3, x4], {2, 3}]]
+```
+#### 列表的构造
+使用`Import`导入`Excel`数据：
+```mathematica
+data=Import["MathStuScore.xlsx","XLSX",
+  CharacterEncoding->"MacintoshChineseSimplified"]
+  (*在Mathematica 笔记本中能够正常运行*)
+Print[data]
+```
+使用`Range`:
+```mathematica
+Print[Range[10]]
+Print[Range[2, 10]]
+Print[Range[2, 10, 3]]
+```
+使用`Table`:
+```mathematica
+Print[Table[i^2 + i + 1, {i, 10}]]
+Print[Table[KroneckerDelta[i, j - 1] + t KroneckerDelta[i, j + 4], {i, 
+   5}, {j, 5}]]
+```
+打印九九乘法表：
+```mathematica
+multiplicationTable=Grid[Table[ToString[j]<>"*"
+ <>ToString[i]<>"="<>ToString[i*j],
+ {i,9},{j,i}], Alignment->{Left, Baseline}
+];
+Export["multiplicationTable.png", multiplicationTable];
+```
+![[multiplicationTable.png]]
+练习：使用列表生成杨辉三角并打印：
+```mathematica
+YangsTriangle[n_]:=Module[{
+  
+}, Table[{i,n}]]
+```
+使用`Array`:
+```mathematica
+Print[Array[#^2 + # + 1 &, 10]]
+Print[#^2 + # + 1 & /@ Range[10]]
+```
+`Tuples`与`Outer`:
+```mathematica
+Print[Tuples[{a, b, c}, 3]]
+Print[Outer[f, {a, b}, {c, d, e}]]
+```
+#### 列表的查询
+我们可以使用`MemberQ`和`FreeQ`来判断元素是否属于列表。
+```mathematica
+ex = f[x1, x2, x3, x4];
+Print[Function[i, MemberQ[ex, i]] /@ {f, x1, x2, x3, x4, x5, x6}]
+Print[Function[i, FreeQ[ex, i]] /@ {f, x1, x2, x3, x4, x5, x6}]
+Print[MemberQ[ex, f, Heads -> True]]
+```
+使用`Count`计算列表中给定元素出现的次数。
+```mathematica
+ex={a, b, a, a, {b, b, b}, b^b, c, b};
+Print[Count[ex, b]]
+Print[Count[ex, b, {2}]]
+```
+使用`Position`查找给定元素的位置。
+```mathematica
+euler = (a + b^n)/n == x;
+(*FullForm=Equal[Times[Plus[a,Power[b,n]],Power[n,-1]],x]*)
+Print[Position[euler, n]]
+```
+使用`Select`选择列表中的元素是的条件为真:
+```mathematica
+Print[Select[Prime /@ Range[10], OddQ]]
+Print[Select[Prime /@ Range[10], Mod[#, 4] == 1 &]]
+```
+#### 添加删除和修改列表元素
+```mathematica
+ex = f[a, b, c];
+Print[{Prepend[ex, z], 
+  Append[ex, d], 
+  Insert[ex, i, 2], 
+  Insert[ex, i, -2]}]
+Print[ex]
+Print[{PrependTo[ex, z], AppendTo[ex, d]}]
+Print[Delete[ex, 1]]
+Print[Delete[ex, {{1}, {-1}}]]
+Print[{ReplacePart[ex, 1 -> x], ex}]
+Print[ex]
+ex[[1]] = y;
+Print[ex]
+Print[Reverse[ex]]
+Print[RotateLeft[ex, 2]]
+Print[RotateRight[ex, -2]]
+Print[RotateRight[ex, 2]]
+```
+头部一样的表达式之间的集合运算：
+```mathematica
+Print[#[f[x1, x2], f[x1, x3]]&/@{Join,Union,Intersection,Complement}]
+```
+排序
+```mathematica
+list = Array[RandomInteger[5] &, {6, 2}];
+Print[list]
+Print[Sort[list]]
+(*上述命令等价于下列命令*)
+Print[Sort[list, Function[{list1, list2}, list1[[1]] < list2[[1]] ] ] ]
+(*更加简洁地，等价于下列命令*)
+Print[Sort[list, #1[[1]] < #2[[1]] &] ]
+Print[Sort[list, #1[[1]] <= #2[[1]] &]]
+(*上一条命令等价于下列命令*)
+Print[Sort[list, (#1[[1]] < #2[[1]]) 
+	|| (#1[[1]] == #2[[1]] && #1[[2]] > #2[[2]]) &]]
+```
+排序索引
+```mathematica
+list = {2, 3, 5, 1, 4};
+Print[Sort[list]]
+(*使用Ordering输出排序后的位置索引*)
+Print[Ordering[list]]
+Print[list[[Ordering[list]]]]
+```
+
+练习：找出不大于 $n$ 的所有无平方因子的自然数。
+> 如果除 $1$ 以外没有其他完全平方数可以将其整除，则称整数 $n$ 不包含平方因子.
+> ![[10以内的无平方因子数.png]]
+```mathematica
+allNonSquareNumbers[n_] := 
+	Select[Range[n], SquareFreeQ[#] &]
+Print[allNonSquareNumbers[15]]
+```
+下面是另外的解法：
+
+* 方法一：`AppendTo`
+
+  ```mathematica
+  solution1 =
+    Function[n, L = {}; 
+     Function[i, If[SquareFreeQ[i], AppendTo[L, i]]] /@ Range[n]; L];
+  Print[solution1[15]]
+  ```
+
+* 方法二：`PrependTo`
+
+  ```mathematica
+  solution2 =
+    Function[n, L = {}; 
+     Function[i, If[SquareFreeQ[i], PrependTo[L, i]]] /@ Range[n]; 
+     Reverse[L]];
+  Print[solution2[15]]
+  ```
+* 方法三：嵌套表 + `Flatten`
+  ```mathematica
+  solution3[n_] :=Module[{L={}},
+    If[SquareFreeQ[#], L = {L, #}]& /@ Range[n];
+     Print[Flatten[L]]];
+  solution3[15]
+  ```
+* 方法四：收获(`Reap`)与播种(`Sow`)
+  ```mathematiac
+  solution4[n_]:= 
+ Reap[If[SquareFreeQ[#], Sow[#], 0]&/@Range[n]][[2, 1]];
+  allNonSquareNumbers[15]
+  ```
+练习：求Pell方程$x^2 - 2 y^2 = 1$的满足$1 \leq y \leq n$的解。
+```mathematica
+L = {};
+Do[If[Sqrt[1 + 2 y^2] \[Element] Integers, 
+  L = AppendTo[L, {Sqrt[1 + 2 y^2], y}]], {y, 20}]
+Print[L]
+(*使用Reap-Sow*)
+Print[Reap[Do[If[x = Sqrt[1 + 2 y^2]; IntegerQ[x], Sow[{x, y}]], {y, 
+    20}]][[2, 1]]
+    ]
+```
+
 ## 参考资料
 - 清华刘思齐: [链接](https://cloud.tsinghua.edu.cn/d/e26004d487914c4f9f4e/)
 - Wolfram U: [链接](https://www.wolfram.com/wolfram-u/?source=nav) 可以获得证书，有你名字
