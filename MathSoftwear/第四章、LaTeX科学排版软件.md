@@ -54,7 +54,7 @@
 
 #### 首次使用
 选择你喜欢的编辑器，例如TeXworks或者TeXstudio，输入一下代码：
-```tex
+```latex
 \documentclass{article}
 \begin{document}
 ``Hello world!'' from \LaTeX.
@@ -70,7 +70,7 @@ LATEX 中命令以反斜线 `\`开头，为以下两种形式之一:
 > 要注意 LATEX 命令是对**大小写敏感**的。
 
 * 字母形式的 LATEX 命令忽略其后的所有连续空格。如果要人为引入空格，需要在命令后面 加一对花括号阻止其忽略空格：
-  ```tex
+  ```latex
   Shall we call ourselves \TeX users or \TeX{} users?
   ```
 * 有些 LATEX 命令可以接收一些参数:
@@ -79,7 +79,7 @@ LATEX 中命令以反斜线 `\`开头，为以下两种形式之一:
 * 有些命令可以带一个星号`*`. 星号看作一种特殊的可选参数。
 ##### 环境
 LATEX中还包括环境，用以令一些效果在局部生效，或是生成特殊的文档元素。LATEX 环境的用法为一对命令`\begin`和`\end`:
-```tex
+```latex
 \begin{⟨environment name⟩}[⟨optional arguments⟩]{⟨mandatory arguments⟩} 
   ...
 \end{⟨environment name⟩}
@@ -89,7 +89,7 @@ LATEX中还包括环境，用以令一些效果在局部生效，或是生成特
 * LATEX 使用一对花括号`{`和`}`作为分组，在分组中使用的命令被限制在分组内，不会影响到分组外的内容。
 * 上文提到的 LATEX 环境隐含了一个分组，在环境中的命令被包裹在分组内。
 ##### LATEX 源代码结构
-```tex
+```latex
 \documentclass{...} % ... 为某文档类 
 % 导言区
 \begin{document}
@@ -108,7 +108,7 @@ LATEX中还包括环境，用以令一些效果在局部生效，或是生成特
 * 对应的中文版文档类为: `ctexart`、`ctexbook`、`ctexrep`。
 * `minimal`文档类一般用于代码测试的最小工作示例。
 * 文档类包括可选参数，它全局地规定一些排版的参数。
-  ```tex
+  ```latex
   \documentclass[11pt,twoside,a4paper]{article}
   ```
   LATEX 的三个标准文档类包括：
@@ -120,7 +120,7 @@ LATEX中还包括环境，用以令一些效果在局部生效，或是生成特
   * 草稿/终稿模式: `draft`, `final`
 ##### 宏包
   在使用 LATEX 时，时常需要依赖一些扩展来增强或补充 LATEX 的功能，比如排版复杂的表 格、插入图片、增加颜色甚至超链接等等。这些扩展称为**宏包**。调用宏包的方法非常类似调用文档类的方法:
-  ```tex
+  ```latex
   \usepackage[⟨options⟩]{⟨package-name⟩}
   ```
   * 使用`texdoc <pkg-name>`查阅相应文档
@@ -145,7 +145,7 @@ LATEX 在编译过程中除了生成`.dvi`或`.pdf`格式的文档外，还可�
 #### 文件的组织方式
 当编写长篇文档时，例如当编写书籍、毕业论文时，单个源文件会使修改、校对变得十分困难。将源文件分割成若干个文件，例如将每章内容单独写在一个文件中，会大大简化修改和校对的工作。
 LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件: 
-```tex
+```latex
 \include{⟨filename⟩} %.tex后缀不要写
 \include{chapters/file} % 相对路径
 \include{/home/Bob/file} % *nix(包含 Linux、macOS)绝对路径
@@ -157,7 +157,7 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
 > * 可以在**导言区**使用`\includeonly`来指定正文中需要载入的`\include`文件列表，不再列表中的文件将不起作用。这在书籍类文档写作时非常有用，可以加快编译。
 
 最后介绍一个实用的工具宏包**syntonly**。加载这个宏包后，在导言区使用`\syntaxonly`命令，可令 `LATEX` 编译后不生成 `DVI` 或者 `PDF` 文档，只排查错误，编译速度会快不少:
-```tex
+```latex
 \usepackage{syntonly}
 \syntaxonly
 ```
@@ -171,14 +171,14 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
 * `LATEX` 源代码为文本文件，而文本文件的一个至关重要的性质是它的编码。常见的编码有`ASCII`、 `Latin-1`(西欧)、`GB 2312`(简体)、`GBK`(繁体)、`UTF-8`（所有语言）。
 * 早期排版中文须使用 `CJK` 宏包，它是一个用于处理中、日、韩等东亚语言文字编码和字体配置的宏包。**但 `CJK` 宏包的使用非常不方便，目前已不再推荐直接使用。**
 * 现行版本的 `LATEX` 使用 `UTF-8` 作为默认编码。将使用拉丁字母的文档保存为 `UTF-8` 编码 后，可以用 `pdflatex` 直接编译，比如:
-  ```tex
+  ```latex
   \documentclass{article}
   \begin{document}
   Français Português Español Føroyskt
   \end{document}
   ```
 * 较为现代的 `TEX` 引擎，如 `XƎTEX` 和 `LuaTEX`，它们均原生支持 `UTF-8` 编码。使用 `xelatex` 和 `lualatex` 排版时，将源代码保存为 `UTF-8` 编码，并借助 `fontspec` 宏包调用适当的字体，原则上就可以在源代码中输入任意语言的文字。
-  ```tex
+  ```latex
   \documentclass{article}
   \usepackage{fontspec} % 使用 XeLaTeX 必须加载 fontspec 宏包
   \usepackage{polyglossia} % 支持多语言
@@ -208,7 +208,7 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
 * `ctex` 宏包和文档类进一步封装了 `CJK`、`xeCJK`、`luatexja` 等宏包，使得用户在排版中文时不用再考虑排版引擎等细节。
 * `ctex` 宏包和文档类能够识别操作系统和 `TEX` 发行版中安装的中文字体，因此基本无需额外配置即可排版中文文档。
 * `ctex` 宏包本身用于配合各种文档类排版中文，而 `ctex` 文档类对 `LATEX` 的标准文档类进行了封装，对一些排版根据中文排版习惯做了调整，包括 `ctexart`、`ctexrep`、 `ctexbook` 等。
-  ```tex
+  ```latex
   \documentclass{ctexart}
   \begin{document}
   在\LaTeX{}中排版中文。 汉字和English单词混排，
@@ -223,7 +223,7 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
 行末的换行符视为一个空格; 但连续两个换行符，也就是空行，会将文字分段。多个空行被视为一个空行。也可以在行末使用 `\par` 命令分段。
 * **注释**: `LATEX` 用 % 字符作为注释。在这个字符之后直到行末，所有的字符都被忽略，行末的换行符也不引入空格。
 * **特殊字符**: 以下字符在 LATEX 里有特殊用途, `#`, `$, `%`, `&`, `{`, `}`, `_`, `^`, `~`, `\`. 如果想要输入以上符号，需要使用以下带反斜线的形式输入，类似编程语言里的“转义”符号:
-  ```tex
+  ```latex
   \# \$ \% \& \{ \} \_ \^{} \~{} \textbackslash
   ```
 * **连字**(ligatures): 西文排版中经常会出现连字(ligatures)，常见的有 ff/fi/fl/ffi/ffl。可以通过`{}`打断连字：`dif{}f{}icult`, `f{}ind`
@@ -235,7 +235,7 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
     * 连字号 `-` 用来组成复合词;
     * 短破折号 `--` 用来连接数字表示范围;
     * 长破折号 `---` 用来连接单词，语义上类似中文的破折号。
-    ```tex 
+    ```latex 
      daughter-in-law, X-rated\\
      pages 13--67\\
      yes---or no?
@@ -243,7 +243,7 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
   * **省略号**: LATEX 提供了 `\ldots` 命令表示省略号
   * **波浪号**: 西文中较少将波浪号作为标点符号使用，在中文环境中一般直接使用全角波浪号(~)。
 * **拉丁文扩展与重音**: LATEX 支持用命令输入西欧语言中使用的各种拉丁文扩展字符，主要为带重音的字母
-  ```tex
+  ```latex
   H\^otel, na\"\i ve, \'el\`eve,\\
   sm\o rrebr\o d, !`Se\ norita!,\\
   Sch\"onbrunner Schlo\ss{}
@@ -290,7 +290,7 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
   * `\mainmatter` 正文部分: 页码使用阿拉伯数字，从 1 开始计数; 其后的章节编号正常。 
   * `\backmatter` 后记部分: 页码格式不变，继续正常计数;其后的 `\chapter` 不编号。
 以上三个命令还可和 `\appendix` 命令结合，生成有前言、正文、附录、后记四部分的文档。
-  ```tex
+  ```latex
   %book 文档类的文档结构示例。
   \documentclass{book}
 
@@ -323,12 +323,12 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
   ```
 #### 标题页
 * `LATEX` 支持生成简单的标题页。首先需要给定标题和作者等信息:
-  ```tex
+  ```latex
   \title{⟨title⟩} \author{⟨author ⟩} \date{⟨date⟩}
   ```
 其中前两个命令是必须的(不用 `\title` 会报错;不用 `\author` 会警告)，`\date` 命令可选。使用 `\today` 命令自动生成当前日期。
 * 在 `\title`、`\author` 等命令内可以使用 `\thanks` 命令生成标题页的脚注，用 `\and` 隔开多个人名。
-  ```tex
+  ```latex
   \documentclass{article}
   \title{This is a test}
   \author{San Zhang \thanks{The first author would like to thanks...}
@@ -339,12 +339,12 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
   \end{document}
   ```
   * 在标准文档类（`article`、`book`、`report`）可以使用`titlepage`、`notitlepage`来设置是否有单独的标题页。例如
-    ```tex 
+    ```latex 
     \documentclass[titlepage]{article}
     ```
     将生成一页单独的标题页，这不是`article`默认的方式。
     * `LATEX` 标准类还提供了一个简单的 `titlepage` 环境，生成不带页眉页脚的一页。用户可以在这个环境中使用各种排版元素自由发挥，生成自定义的标题页以替代 `\maketitle` 命令。甚至 可以利用 `titlepage` 环境重新定义 `\maketitle`:
-    ```tex
+    ```latex
     \renewcommand{\maketitle}{\begin{titlepage}
     ... % 用户自定义命令
     \end{titlepage}}
@@ -354,11 +354,11 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
 #### 交叉引用
 交叉引用是 `LATEX` 强大的自动排版功能的体现之一。
 * 在能够被交叉引用的地方，如章节、公式、图表、定理等位置使用 `\label` 命令: 
-  ```tex
+  ```latex
   \label{⟨label-name⟩}
   ```
   之后可以在别处使用 `\ref` 或 `\pageref` 命令，分别生成交叉引用的编号和页码: 
-  ```tex
+  ```latex
   \ref{⟨label-name⟩} \pageref{⟨label-name⟩}
   ```
 * `\label` 命令可用于记录各种类型的交叉引用，使用位置分别为:
@@ -370,14 +370,14 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
 #### 脚注和边注
 * 使用 `\footnote` 命令可以在页面底部生成一个脚注: `\footnote{⟨footnote⟩}`
 * 有些情况下(比如在表格环境、各种盒子内)使用 `\footnote` 并不能正确生成脚注。我们可以分两步进行，先使用 `\footnotemark` 为脚注计数，再在合适的位置用 `\footnotetext` 生成脚注。比如:
-  ```tex
+  ```latex
   \begin{tabular}{l}
   \hline “天地玄黄，宇宙洪荒。日月盈昃，辰宿列张。”\footnotemark \\ \hline
   \end{tabular}
   \footnotetext{表格里的名句出自《千字文》。}
   ```
 * 使用 `\marginpar` 命令可在边栏位置生成边注:
-  ```tex
+  ```latex
   \marginpar[⟨left-margin⟩]{⟨right-margin⟩}
   ```
   如果只给定了 `⟨right-margin⟩`，那么边注在奇偶数页文字相同; 如果同时给定了 `⟨left-margin⟩`，则 偶数页使用 `⟨left-margin⟩` 的文字。
@@ -386,7 +386,7 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
 * LATEX提供了有序列表(`enumerate`)和无序列表(`itemize`)环境。两者用法类似。都是用 `\item` 标明每个列表项。`enumerate` 环境会自动对列表项编号。
 * 其中 `\item` 可带一个可选参数，将有序列表的计数或者无序列表的符号替换成自定义的符号。
 * 列表可以嵌套使用，最多嵌套四层。
-  ```tex
+  ```latex
   \begin{enumerate}
     \item An item.
     \begin{enumerate}
@@ -397,14 +397,14 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
   \end{enumerate}
   ```
 * 关键字环境 `description` 的用法与以上两者类似，不同的是 `\item` 后的可选参数用来写关键字，以粗体显示，一般是必填的:
-  ```tex
+  ```latex
    \begin{description}
     \item[Enumerate] Numbered list.
     \item[Itemize] Non-numbered list.
   \end{description}
   ```
 * 各级无序列表的符号由命令 `\labelitemi` 到 `\labelitemiv` 定义，可以简单地重新定义它们:
-  ```tex
+  ```latex
   \renewcommand{\labelitemi}{\ddag}
   \renewcommand{\labelitemii}{\dag}
   \begin{itemize}
@@ -417,7 +417,7 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
   \end{itemize}
   ```
 * 有序列表的符号由命令 `\labelenumi` 到 `\labelenumiv` 定义，重新定义这些命令需要用到计数器相关命令:
-  ```tex
+  ```latex
    \renewcommand{\labelenumi}%
     {\Alph{enumi}>}
   \begin{enumerate}
@@ -428,7 +428,7 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
 ##### 对齐环境
 * `center`、`flushleft` 和 `flushright` 环境分别用于生成居中、左对齐和右对齐的文本环境。
 * 除此之外，还可以用以下命令直接改变文字的对齐方式: `\centering`、`\raggedright`、`\raggedleft`
-  ```tex
+  ```latex
   \centering
   Centered text paragraph.
   \raggedright
@@ -445,7 +445,7 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
 摘要环境 `abstract` 默认只在标准文档类中的 `article` 和 `report` 文档类可用，一般用于紧跟 `\maketitle` 命令之后介绍文档的摘要。如果文档类指定了 `titlepage` 选项，则单独成页; 反之， 单栏排版时相当于一个居中的小标题加一个 `quotation` 环境，双栏排版时相当于 `\section*` 定义的一节。
 ##### 代码环境
 有时我们需要将一段代码原样转义输出，这就要用到代码环境 `verbatim`，它以等宽字体排版代码，回车和空格也分别起到换行和空位的作用;带星号的版本更进一步将空格显示成“␣”。
-```tex
+```latex
 \begin{verbatim}
 #include <iostream>
 int main()
@@ -456,13 +456,13 @@ return 0; }
 \end{verbatim}
 ```
 要排版简短的代码或关键字，可使用 `\verb` 命令:
-```tex
+```latex
 \verb|\LaTeX| \\
 \verb+(a || b)+ \verb*+(a || b)+
 ```
 #### 表格
 排版表格最基本的 `tabular` 环境用法为:
-```tex
+```latex
 \begin{tabular}[⟨align⟩]{⟨column-spec⟩} 
 ⟨item1⟩ & ⟨item2⟩ & ... \\
 \hline
@@ -470,7 +470,7 @@ return 0; }
 \end{tabular}
 ```
 直接使用 `tabular` 环境的话，会和周围的文字混排。此时可用一个可选参数 `⟨align⟩` 控制垂 直对齐:`t` 和 `b` 分别表示按表格顶部、底部对齐，其他参数或省略不写(默认)表示居中对齐。
-```tex
+```latex
 \begin{tabular}{|c|}
   center-\\ aligned \\
 \end{tabular},
@@ -493,13 +493,13 @@ return 0; }
 | `@{⟨string⟩}`|自定义内容 `⟨string⟩`|
   > `@` 格式可在单元格前后插入任意的文本，但同时它也消除了单元格前后额外添加的间距。
 * 另外 `LATEX` 还提供了简便的将格式参数重复的写法 `*{⟨n⟩}{⟨column-spec⟩}`，比如以下两种 写法是等效的
-  ```tex
+  ```latex
   \begin{tabular}{|c|c|c|c|c|p{4em}|p{4em}|}
   \begin{tabular}{|*{5}{c|}*{2}{p{4em}|}}
   ```
 ##### 列宽
 `tabularx`引入了一个 `X` 列格式，类似 `p` 列格式，不过会根据表格宽度自动计算列宽，多个 `X` 列格式平均分配列宽。
-  ```tex
+  ```latex
   % \usepackage{array,tabularx}
   \begin{tabularx}{14em}%
   {|*{4}{>{\centering\arraybackslash}X|}}
@@ -510,7 +510,7 @@ return 0; }
   ```
 ##### 横线
 我们已经在之前的例子见过许多次绘制表格线的 `\hline` 命令。另外 `\cline{⟨i⟩-⟨j⟩}` 用来绘制跨越部分单元格的横线:
-```tex
+```latex
  \begin{tabular}{|c|c|c|}
   \hline
   4 & 9 & 2 \\ \cline{2-3}
@@ -519,7 +519,7 @@ return 0; }
 \end{tabular}
 ```
 在科技论文排版中广泛应用的表格形式是**三线表**，形式干净简明。三线表由 `booktabs` 宏包支持，它提供了 `\toprule`、`\midrule` 和 `\bottomrule` 命令用以排版三线表的三条线，以及和 `\cline` 对应的 `\cmidrule`。除此之外，最好不要用其它横线以及竖线:
-```tex
+```latex
 % \usepackage{booktabs}
 \begin{tabular}{cccc}
   \toprule
@@ -534,15 +534,15 @@ return 0; }
 ```
 ##### 合并单元格
 * LATEX 是一行一行排版表格的，横向合并单元格较为容易，由 `\multicolumn` 命令实现:
-  ```tex
+  ```latex
   \multicolumn{⟨n⟩}{⟨column-spec⟩}{⟨item⟩}
   ```
 * 纵向合并单元格需要用到 `multirow` 宏包提供的 `\multirow` 命令:
-  ```tex
+  ```latex
   \multirow{⟨n⟩}{⟨width⟩}{⟨item⟩}
   ```
 * 一个结合 `\cline`、`\multicolumn` 和 `\multirow` 命令的例子:
-  ```tex
+  ```latex
   % \usepackage{multirow}
   \begin{tabular}{ccc}
     \hline
@@ -555,7 +555,7 @@ return 0; }
   ```
 ##### 行距控制
 LATEX 生成的表格看起来通常比较紧凑。修改参数 `\arraystretch` 可以得到行距更加宽松的表格:
-```tex
+```latex
  \renewcommand\arraystretch{1.8}
 \begin{tabular}{|c|}
   \hline
@@ -569,7 +569,7 @@ LATEX 生成的表格看起来通常比较紧凑。修改参数 `\arraystretch` 
 * 使用 `xelatex` 命令是我们最推荐的方式, 因为它支持的图片格式最多。
 * 插入图片命令`\includegraphics[⟨options⟩]{⟨filename⟩}`
 * `\graphicspath` 命令用于设置图片文件路径，设置后可以使用相对路径。
-  ```tex
+  ```latex
   % 假设主要的图片放在 figures 子目录下，标志放在 logo 子目录下
   \graphicspath{{figures/}{logo/}}
   ```
@@ -585,12 +585,12 @@ LATEX 生成的表格看起来通常比较紧凑。修改参数 `\arraystretch` 
   盒子是 `LATEX` 排版的基础单元，虽然解释略有抽象: 每一行是一个盒子，里面的文字从左到右依次排列; 每一页也是一个盒子，各行文字从上到下依次排布⋯⋯颇有一些活字印刷术的味道。
   LATEX 提供了一些命令让我们手动生成一些有特定用途的盒子。
 ##### 水平盒子
-```tex
+```latex
  \mbox{...} %生成一个基本的水平盒子，内容只有一行，不允许分段
  \makebox[⟨width⟩][⟨align⟩]{...} 
 ```
 `\makebox` 更进一步，可以加上可选参数用于控制盒子的宽度 `⟨width⟩`，以及内容的对齐方式 `⟨align⟩`，可选居中 `c`(默认值)、左对齐 `l`、右对齐 `r` 和分散对齐 `s`。
-```tex
+```latex
 |\mbox{Test some words.}|\\
 |\makebox[10em]{Test some words.}|\\
 |\makebox[10em][l]{Test some words.}|\\
@@ -598,18 +598,18 @@ LATEX 生成的表格看起来通常比较紧凑。修改参数 `\arraystretch` 
 |\makebox[10em][s]{Test some words.}|
 ```
 一个实例是：
-```tex
+```latex
 \makebox[12em][s]{本 科 毕 业 论 文 （ 设 计 ）}
 ```
 ##### 带框的水平盒子
 `\fbox` 和 `\framebox` 让我们可以为水平盒子添加边框。使用的语法与 \mbox 和 \makebox
 一模一样
-```tex
+```latex
 \fbox{Test some words.}\\
 \framebox[10em][r]{Test some words.}
 ```
 可以通过 `\setlength` 命令调节边框的宽度 `\fboxrule` 和内边距 `\fboxsep`:
-```tex
+```latex
 \framebox[10em][r]{Test box}\\[1ex]
 \setlength{\fboxrule}{1.6pt}
 \setlength{\fboxsep}{1em}
@@ -617,7 +617,7 @@ LATEX 生成的表格看起来通常比较紧凑。修改参数 `\arraystretch` 
 ```
 ##### 垂直盒子
 如果需要排版一个文字可以换行的盒子，`LATEX` 提供了两种方式:
-```tex
+```latex
 \parbox[⟨align⟩][⟨height⟩][⟨inner-align⟩]{⟨width⟩}{...}
 \begin{minipage}[⟨align⟩][⟨height⟩][⟨inner-align⟩]{⟨width⟩}
 ...
@@ -626,11 +626,11 @@ LATEX 生成的表格看起来通常比较紧凑。修改参数 `\arraystretch` 
 其中 `⟨align⟩` 为盒子和周围文字的对齐情况(类似 `tabular` 环境); `⟨height⟩` 和 `⟨inner-align⟩` 设置盒子的高度和内容的对齐方式，类似水平盒子 `\makebox` 的设置，不过 `⟨inner-align⟩` 接受的参数是顶部 `t`、底部 `b`、居中 `c` 和分散对齐 `s`。
 ##### 标尺盒子
 `\rule` 命令用来画一个实心的矩形盒子，也可适当调整以用来画线(标尺):
-```tex
+```latex
 \rule[⟨raise⟩]{⟨width⟩}{⟨height⟩}
 ```
 例如：
-```tex
+```latex
 Black \rule{12pt}{4pt} box.
 Upper \rule[4pt]{6pt}{8pt} and
 lower \rule[-4pt]{6pt}{8pt} box.
@@ -638,7 +638,7 @@ A \rule[-.4pt]{3em}{.4pt} line.
 ```
 #### 浮动体
 内容丰富的文章或者书籍往往包含许多图片和表格等内容。这些内容的尺寸往往太大，导致分页困难。`LATEX` 为此引入了浮动体的机制，令大块的内容可以脱离上下文，放置在合适的位置。
-```tex
+```latex
 \begin{table}[⟨placement⟩] 
 ...
 \end{table}
@@ -665,14 +665,14 @@ A \rule[-.4pt]{3em}{.4pt} line.
 `\caption` 生成的标题, 可通过修改 `\figurename` 和 `\tablename` 的内容来修改标题的前缀。
 
 `table` 和 `figure` 两种浮动体分别有各自的生成目录的命令:
-```tex
+```latex
 \listoftables
 \listoffigures
 ```
 它们类似 `\tableofcontents` 生成单独的章节。
 ##### 并排和子图表
 我们时常有在一个浮动体里面放置多张图的用法。最简单的用法就是直接并排放置，也可以通过分段或者换行命令 `\\` 排版多行多列的图片。以下为示意代码.
-```tex
+```latex
 %\usepackage{mwe}
 %\usepackage{graphicx}
 \begin{figure}[htbp]
@@ -685,7 +685,7 @@ A \rule[-.4pt]{3em}{.4pt} line.
 \end{figure}
 ```
 由于标题是横跨一行的，用 `\caption` 命令为每个图片单独生成标题就需要借助前文提到的 `\parbox` 或者 `minipage` 环境，将标题限制在盒子内。
-```tex
+```latex
 \begin{figure}[htbp]
   \centering
   \parbox{0.45\textwidth}{
@@ -700,7 +700,7 @@ A \rule[-.4pt]{3em}{.4pt} line.
 \end{figure}
 ```
 当我们需要更进一步，给每个图片定义小标题时，就要用到 `subcaption` 宏包的功能了。
-```tex
+```latex
 %\usepackage{subcaption} % 子图支持
 \begin{figure}[htbp]
   \centering % 子图 1
@@ -721,4 +721,283 @@ A \rule[-.4pt]{3em}{.4pt} line.
 \end{figure}
 ```
 ### 排版数学公式
+排版数学公式是`LATEX` 的强项。排版数学公式主要用到AMS 宏集:
+* AMS 宏集由美国数学学会提供，核心是 `amsmath` 宏包，支持多行公式排版。
+* 还包括 `amsfonts` 和 `amssymb` 宏包提供数学符号，`amsthm` 宏包扩展定理证明格式。
+#### 公式排版基础
+* 行内和行间公式
+  * **行内公式**：与文字混排，用 `\(...\)` 包裹。
+  * **行间公式**：单独成行，用 `\[...\]` 环境包裹。
 
+> 进入数学模式后，空格被忽略，间距由符号性质决定。
+> 不允许空行，无法用 `\\` 手动换行。
+> 所有字母被视为数学变量。
+
+##### 数学符号
+* 一般符号
+  * 希腊字母：如 `\alpha`、`\beta`、`\Gamma`、`\Delta`。
+  * 无穷大符号：`\infty`。
+  * 省略号：`\dots` 和 `\cdots`。
+* 指数、上下标和导数
+  * 用 `^` 和 `_` 标明上下标，子公式用花括号包裹。
+* 分式和根式
+  * 分式用 `\frac{分子}{分母}` 书写。
+  * 根式用 `\sqrt{...}`；n次方根用 `\sqrt[n]{...}`。
+* 关系符
+  * 常用关系符号如 `=`、`>`、`<`、`\neq`、`\ge`、`\le`、`\approx`、`\equiv` 等。
+
+* 算符
+  * 二元算符如 `+`、`-`、`*`、`/`，其他用命令输入，如 `\times`、`\div`、`\pm`、`/mp`。
+
+* 巨算符
+  * 如积分号 `\int`、求和号 `\sum`、连乘号`\prod`，大小和形状在行内和行间公式中不同。
+* 数学重音和上下括号
+  * 加重音如 `\dot{r}`、`\ddot{r}`、`\vec{r}`、`\hat{\mathbf{e}}`、`\tilde{a}`。
+  * 上/下括号用 `\overbrace` 和 `\underbrace` 生成。
+* 箭头
+  * 常用箭头如 `\rightarrow`、`\leftarrow`，`\xleftarrow` 和 `\xrightarrow` 可伸缩。
+* 括号和定界符
+  * 提供多种括号和定界符，如 `()`、`[]`、`{}`、`\langle \rangle`。
+  * 使用 `\left` 和 `\right` 命令可令括号大小可变。
+
+##### 多行公式
+* 长公式折行
+  * 优先在等号前折行，使用 `amsmath` 的 `multline` 环境。
+* 多行公式对齐
+  * 使用 `align` 环境对齐公式，`&` 分隔符通常放在等号左边。
+* 公用编号的多行公式
+  * 使用 `aligned`、`split`、`gathered` 等环境与 `equation` 环境套用。
+##### 数组和矩阵
+* 使用 `array` 环境排版二维数组，类似 `tabular` 环境。
+* `amsmath` 提供多种矩阵环境，如 `matrix`、`pmatrix`、`bmatrix` 等。
+
+##### 公式中的间距
+* 使用 `\quad`、`\qquad`、`\,`、`\:`、`\;` 和 `\!` 调整间距。
+#### 数学符号的字体控制
+* 数学字母字体
+  * 切换字体命令如 `\mathrm`、`\mathit`、`\mathbf`、`\mathcal`、`\mathfrak`、`\mathbb`。
+* 加粗的数学符号
+  * 使用 `\boldsymbol` 或 `\bm` 命令获得粗体或粗斜体。
+* 数学符号的尺寸
+  * 尺寸命令如 `\displaystyle`、`\textstyle`、`\scriptstyle`、`\scriptscriptstyle`。
+#### 定理环境
+`LATEX` 使用 `\newtheorem` 定义定理环境。
+* `amsthm` 宏包
+  * 提供定理格式切换，定义不带序号的定理环境。
+    ```latex
+    \theoremstyle{definition} \newtheorem{law}{Law}
+    \theoremstyle{plain} \newtheorem{jury}[law]{Jury}
+    \theoremstyle{remark} \newtheorem*{mar}{Margaret}
+    ```
+* 证明环境和证毕符号
+  * 使用 `proof` 环境排版证明过程，自动加上证毕符号。使用 `\qedhere` 命令调整位置。
+  * 如果行末是一个不带编号的公式，证毕符号会另起一行，可以使用 `\qedhere` 命令将证毕符号放在公式末尾。
+  * 在 `align*` 等不带编号的环境中使用 `\qedhere` 也有效。
+
+#### 附加信息
+* **导言区命令**：在使用数学相关命令前，需要在导言区添加相应的宏包支持，例如 `\usepackage{amsmath}`。
+* **交叉引用**：使用 `\label` 和 `\ref` 命令为公式生成交叉引用，`amsmath` 的 `\eqref` 命令为引用自动加上圆括号。
+* **手动修改公式编号**：使用 `\tag` 命令手动修改公式的编号，或者用 `\notag` 命令取消为公式编号。
+* **行间公式的对齐和编号位置**：由文档类选项控制，例如 `fleqn` 选项令行间公式左对齐；`leqno` 选项令编号放在公式左边。
+* **数学模式的特点**：
+  * 数学模式中输入的空格被忽略。
+  * 不允许有空行（分段）。
+  * 所有的字母被当作数学公式中的变量处理。
+* **数学符号的尺寸**：数学符号按照符号排版的位置规定尺寸，包括行间公式尺寸、行内公式尺寸、上下标尺寸、次级上下标尺寸。
+* **字体控制**：
+  * 数学字母字体可以通过 `\mathrm`、`\mathit`、`\mathbf` 等命令切换。
+  * 加粗的数学符号可以使用 `\boldsymbol` 或 `\bm` 命令获得。
+  * 数学符号的尺寸可以通过 `\displaystyle`、`\textstyle` 等命令控制。
+* **定理环境的自定义**：使用 `amsthm` 或 `ntheorem` 宏包自定义定理格式和环境。
+### `LaTeX` 排版样式设定
+#### 字体样式和字号
+* `LATEX` 提供了两组修改字体的命令，全局影响和局部影响。
+* 全局命令如 `\bfseries` 会影响之后所有的字符，局部命令如 `{\bfseries some text}` 只改变特定文本。
+* 公式中的字体命令，如 `\mathbf`，用于修改数学字母样式。
+* 字号命令的实际大小依赖于文档类及其选项。
+* 使用字号命令时，通常需要用花括号进行分组。
+  ```latex
+  {\small The small and \textbf{bold} Romans ruled}
+  {\Large all of great big {\itshape Italy}.}
+  ```
+* 选用字体宏包
+  * 常用的字体宏包如 `lmodern`、`cmbright`、`euler` 等，提供了不同的字体风格。
+  * 字体编码如 OT1 和 T1，T1 字体编码更接近 ASCII 文本编码。
+    ```latex
+    \usepackage[T1]{fontenc}
+    ```
+* 使用 fontspec 宏包更改字体
+  * `xelatex` 和 `lualatex` 编译命令支持直接调用系统中的 `.ttf` 或 `.otf` 格式字体。
+  * `fontspec` 宏包提供了设置全局字体的命令。
+    ```latex
+    \setmainfont{Times New Roman}
+    ```
+* 更改中文字体
+  * `ctex` 宏包或文档类提供了设置中文字体的命令。
+    ```latex
+    \setCJKmainfont{SimSun}
+    ```
+* 使用 `unicode-math` 宏包配置 Unicode 数学字体
+  * `unicode-math` 宏包允许调用 Unicode 数学字体配置数学公式的字体风格。
+    ```latex
+    \usepackage{unicode-math}
+    \setmathfont{Latin Modern Math}
+    ```
+* 文字装饰和强调
+  * 使用 `\underline` 命令为文字添加下划线，`ulem` 宏包提供了更灵活的下划线解决方案。
+  * `\emph` 命令将文字变为斜体以示强调。
+
+#### 段落格式和间距
+* 长度和长度变量
+  * 长度的数值由数字和单位组成，如 `12pt`、`1.5cm`。
+  * 弹性长度如 `12pt plus 2pt minus 3pt` 表示基础长度为 12pt，可以伸展或收缩。
+* 行距
+  * `\linespread{factor}` 命令用于设置行距。
+* 段落格式
+  * `\setlength` 和 `\addtolength` 命令用于设置和增加段落缩进、间距等。
+    ```latex
+    \setlength{\parindent}{20pt}
+    ```
+* 水平间距
+  * `\hspace` 命令用于插入额外的水平间距。
+* 垂直间距
+  * `\vspace` 命令用于增加段落之间的垂直间距。
+#### 页面和分栏
+* 页面参数
+  * 使用 `\setlength` 命令可以修改页面尺寸和边距。
+* 使用 `geometry` 宏包设置页面参数
+  * `geometry` 宏包提供了简便的方法设置页面参数。
+    ```latex
+    \usepackage{geometry}
+    \geometry{a4paper,left=1.25in,right=1.25in,top=1in,bottom=1in}
+    ```
+* 页面内容的垂直对齐
+  * `\raggedbottom` 和 `\flushbottom` 命令分别用于设置页面内容的垂直对齐。
+* 分栏
+  * `multicol` 宏包提供了简单的多栏排版解决方案。
+#### 页眉页脚
+* 基本的页眉页脚样式
+  * `\pagestyle` 和 `\thispagestyle` 命令用于修改页眉页脚的样式。
+    ```latex
+    \pagestyle{headings}
+    ```
+* 手动更改页眉页脚的内容
+  * `\markright` 和 `\markboth` 命令用于手动修改页眉的内容。
+  * `fancyhdr` 宏包
+    * `fancyhdr` 宏包改善了页眉页脚样式的定义方式。
+      ```latex
+      \usepackage{fancyhdr}
+      \pagestyle{fancy}
+      \fancyhf{}
+      \fancyfoot[C]{\bfseries\thepage}
+      ```
+### 特色工具和功能
+#### 参考文献和 `BIBTEX` 工具
+* `LaTeX` 提供 `\cite` 命令用于正文中引用参考文献。
+  ```latex
+  \documentclass{article}
+  \begin{document}
+  \section{Introduction}
+  Partl~\cite{germenTeX} has proposed that \ldots
+  \begin{thebibliography}{99}
+  \bibitem{germenTeX} H.~Partl: \emph{German \TeX},
+  TUGboat Volume~9, Issue~1 (1988)
+  \end{thebibliography}
+  \end{document}
+  ```
+* `BIBTEX` 数据库
+  * `BIBTEX` 允许自动生成不同样式的参考文献列表。
+    ```bibtex
+    @article{Alice13,
+    title = {Demostration of bibliography items},
+    author = {Alice Axford and Bob Birkin and Charlie Copper and Danny Dannford},
+    year = {2013},
+    month = {Mar},
+    journal = {Journal of \TeX perts},
+    volume = {36},
+    number = {7},
+    pages = {114-120}
+    }
+    ```
+* `BIBTEX` 样式
+  * `BIBTEX` 用样式（style）管理参考文献的写法，如 `plain`, `unsrt`, `alpha` 等。
+    ```latex
+    \bibliographystyle{plain}
+    ```
+* 使用 `BIBTEX` 排版参考文献
+  * 利用 `BIBTEX` 数据库生成参考文献和引用，需要指定参考文献格式，引用参考文献，并使用 `\bibliography` 命令。
+    ```latex
+    \documentclass{article}
+    \bibliographystyle{plain}
+    \begin{document}
+    \section{Some words}
+    Some excellent books, for example, \cite{citation1}
+    and \cite{citation2} \ldots
+    \bibliography{books}
+    \end{document}
+    ```
+
+* natbib 宏包
+  * `natbib` 宏包提供人名——年份的引用方式，如 `(Axford et al., 2013)`。
+    ```latex
+    \usepackage{natbib}
+    \citep{Alice13}
+    ```
+* biblatex 宏包
+  * `biblatex` 宏包是基于 LaTeX 宏命令的参考文献解决方案。
+    ```latex
+    \usepackage[style=gb7714-2015]{biblatex}
+    \addbibresource{egbibdata.bib}
+    \begin{document}
+    见文献\cite{caimin2006}。
+    \printbibliography
+    \end{document}
+    ```
+#### 索引和 `makeindex` 工具
+* 使用 `makeindex` 工具的方法
+  * `LaTeX` 借助 `makeindex` 程序完成对索引的排版。
+    ```latex
+    \usepackage{makeidx}
+    \makeindex
+    \index{hello}
+    ```
+* 索引项的写法
+  * 索引项的添加使用 `\index` 命令，支持普通索引、分级索引、格式化索引等多种写法。
+    ```latex
+    \index{hello!Peter}
+    ```
+#### 使用颜色
+* 颜色的表达方式
+  - `color` 或 `xcolor` 宏包提供了对颜色的支持。
+    ```latex
+    \usepackage{xcolor}
+    \color{red} This is red text.
+    ```
+* 带颜色的文本和盒子
+  * 可以使用 `\textcolor`、`\colorbox` 和 `\fcolorbox` 命令为文本和盒子添加颜色。
+    ```latex
+    \textcolor{blue}{Blue text}
+    \colorbox{yellow}{Yellow background}
+    ```
+#### 使用超链接
+* `hyperref` 宏包
+  * `hyperref` 宏包为 PDF 生成超链接功能。
+    ```latex
+    \usepackage{hyperref}
+    \hypersetup{colorlinks=true}
+    ```
+* 超链接
+  * `hyperref` 宏包提供了直接书写超链接的命令。
+    ```latex
+    \href{https://wikipedia.org}{Wiki}
+    ```
+* `PDF` 书签
+  * `hyperref` 宏包为 PDF 生成书签。
+    ```latex
+    \pdfbookmark[1]{Introduction}{intro}
+    ```
+* `PDF` 文档属性
+  * `hyperref` 宏包提供了参数用于改变 PDF 文档的属性。
+    ```latex
+    \hypersetup{pdftitle={My Document}, pdfauthor={Author Name}}
+    ```
