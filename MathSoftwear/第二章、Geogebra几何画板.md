@@ -19,21 +19,69 @@ toc: 'true'
 
 #### 1.1.1 介绍界面和基本操作
 
-- **GeoGebra的安装**：在线版本、离线安装。已知问题：GeoGebra6 classical 在Mac中存在首次启动后，不能将窗口前置显示的问题。建议使用GeoGebra 5经典版。
+- **GeoGebra的安装**：在线版本、离线安装。已知问题：GeoGebra6 classical 在Mac中存在首次启动后，不能将窗口前置显示的问题。建议使用[GeoGebra 5](https://download.geogebra.org/package/win)经典版。
 - **GeoGebra的基本界面**：如何隐藏/显示坐标轴、网格、标签；如何保存、导出文件。
 - **GeoGebra的基本操作**：使用工具构造各种几何对象，并观察代数区域。
 
+---
 ### 1.2 绘制基本几何图形
 
-#### 1.2.1基本图形
+#### 1.2.1 基本图形
 
 - 绘制点、线段、圆、椭圆、抛物线、多边形等；
 - 尝试绘制不同的几何图形
 - 探索GeoGebra的更多功能
+---
+#### 1.2.2 探索多边形的重心
+
+回忆一个三角形$ABC$的重心就是三条边中线的交点$G$。此时，$\overrightarrow{GA}+\overrightarrow{GB}+\overrightarrow{GC}=0$. 
+
+我们希望回答如下问题：
+
+1. 在三角形$ABC$中，满足：$\overrightarrow{GA}+\overrightarrow{GB}+\overrightarrow{GC}=0$ 的点$G$是否唯一？若唯一，它是否就是$ABC$的重心？
+2. 利用1, 我们猜测任何多边形$A_1A_2\ldots A_n$的重心$G$都满足$\sum_{i=1}^n\overrightarrow{GA_i}=0$. 而且反过来也对。
+3. 对矩形，平行四边形，梯形等简单的四边形，检验上述定义的重心是否正确？
+4. 你能对两个矩形拼接而成的$L$型图形，找到该图形的重心吗？
+5. 如何定义一般的多边形的重心？
+6. 过重心的直线是否将图形平分为等面积的两部分？
+
+--- 
 
 **示例**: 利用GeoGebra作出两个矩形拼接成的$L$形图形的重心。
 
 ![L形图形的重心](figures/L形图形的重心.png)
+
+---
+**背景知识**
+1. 质心是空间中质量分布中心的唯一点，其性质是相对于该点的加权位置向量总和为零。
+2. 假设一个粒子系统：$P_1,\ldots, P_n$, 每个粒子$P_i$的质量为$m_i$, 位置为$\vec r_i$, 则其质心坐标$\vec R$满足
+   $$
+   \sum_{i=1}^n m_i(\vec r_i-\vec R)=0\implies \vec R=\frac{\sum_{i=1}^n m_i\vec r_i}{\sum_{i=1}^n m_i}.
+ $$
+ 3. 对空间中的连续体$Q$（例如一个密度均匀的平板），假设位置为$\vec r$处的密度位$\rho(\vec r)$, 则该连续体$Q$的密度为：
+      $$
+      \iiint_{\vec r\in Q}\rho(\vec r)(\vec r-\vec R)dV_Q=0\implies \vec R=\frac{1}{M}\iiint_Q\rho(\vec r)\vec r dV,
+      $$
+	  这里$M=\iiint_Q 1 dV$为$Q$的总质量。
+#### 1.2.3 探索三角形的各种心
+
+**练习**：用GeoGebra作图：
+1. 一个平面三角形$ABC$;
+2. 该三角形的垂心$H$.
+3. 该三角形的重心$G$.
+4. 该三角形的内心$I$.
+5. 该三角形的外心$O$.
+6. 该三角形的旁心$P$.
+最终的图形只有三角形的三条边和三个顶点，以及这五个心。所有的点都有标签，边不要标签。
+
+思考，除了这些心，三角形$ABC$还有哪些心？
+
+---
+**练习**：创建一个自定义工具，使得可以非常容易的构造给定三角形的旁心。
+
+**练习**：利用尺规作图，将任一线段$AB$三等分。
+
+----
 
 ### 1.3 GeoGebra交互式教学的应用
 
@@ -58,7 +106,7 @@ toc: 'true'
 
 #### 1.4.1 轨迹与阴影
 
-**示例**: 如图所示，通过先构造一个正方形$ABCD$，然后以$AB$为直径画半圆弧、以$D$为圆心画圆弧$AC$、线段$BC$构成一个封闭图形。是将该图形利用斜线进行标记。
+**示例**: 如图所示，通过先构造一个正方形$ABCD$，然后以$AB$为直径画半圆弧、以$D$为圆心画圆弧$AC$、线段$BC$构成一个封闭图形。试将该图形利用斜线进行标记。
 
 ![封闭图形的阴影](figures/封闭图形的阴影.png)
 
@@ -122,7 +170,7 @@ IterationList(Flatten(Zip({Polygon(Vertex(p, 4), Point(Semicircle(Vertex(p, 4), 
 - 输入：`Zip(a^2, a, {1,2,5})`  
   结果：`{1,4,25}`
 - 输入：`Zip(Midpoint(A, B), A, {P, Q}, B, {R, S})`  
-  结果：$PR$, $QS$ 之终点列表
+  结果：$PR$, $QS$ 之中点列表
 - 输入：`Zip(Degree(a), a, {x^2, x^3, x^6})`  
   结果：`{2,3,6}`
 - 输入：`Zip(Simplify(a*x^(b-1)), a, {1, 2, 5}, b)`  
@@ -141,13 +189,43 @@ IterationList(Flatten(Zip({Polygon(Vertex(p, 4), Point(Semicircle(Vertex(p, 4), 
 
 #### 2.2.1 分形二叉树
 ```geogebra
-A=(50,-50)
-B=(50,-10)
-f=Segment(A,B)
-alpha=2.72
-beta=3.73
-kappa=0.7
-IterationList(Flatten(Zip(Zip(Segment(Point(f, 1), Dilate(Rotate(Point(f, 0), theta, Point(f, 1)), kappa, Point(f, 1))), theta, {alpha, beta}), f, f1)), f1, {{f}}, n)
+// 定义起始点 A 和 B
+A = (50, -50) // 左下角点
+B = (50, -10) // 右下角点
+
+// 创建初始线段 f
+f = Segment(A, B)
+
+// 定义旋转角度和缩放因子
+alpha = 2.72 // 第一个旋转角度
+beta = 3.73  // 第二个旋转角度
+kappa = 0.7  // 缩放因子
+
+// 定义迭代函数
+// Flatten: 扁平化嵌套列表
+// Zip: 将多个列表按元素配对
+// Segment: 生成线段
+// Point(f, 1): 获取线段 f 的末端点
+// Dilate: 进行缩放
+// Rotate: 进行旋转
+// theta: 旋转角度
+// n: 迭代次数
+
+// 生成分形二叉树的迭代列表
+IterationList(
+    Flatten(
+        Zip(
+            Zip(
+                Segment(Point(f, 1), 
+                        Dilate(Rotate(Point(f, 0), theta, Point(f, 1)), kappa, Point(f, 1))
+                ), 
+                theta, {alpha, beta} // 旋转角度列表
+            ), 
+            f, f1 // 将线段与其生成的分支配对
+        )
+    ), 
+    f1, {{f}}, n // 迭代次数和初始线段
+)
 ```
 
 ![分形二叉树](figures/二叉树.png)
@@ -162,26 +240,20 @@ C=Rotate(B,pi/3,A)
 f=Segment(A,B)
 g=Segment(B,C)
 h=Segment(C,A)
-IterationList(
-Flatten(
-Zip(
-Zip(
-Sequence(
-Segment(Element(l1, u), Element(l1, u + 1)), u, 1, 4
-), l1, {
-  /*将顶点插入到三等分点序列*/
-  Insert(
-  /*得到三等分线段的顶点*/
-  Rotate(Point(ff, 2 / 3), -pi/3, Point(ff, 1 / 3)), 
-  /*生成线段ff上的三等分点序列，包括端点*/
-  Sequence(Point(ff, v), v, 0, 1, 1 / 3)
-  /*3表示插入在序列的第三个位置*/
-, 3)}
-), ff, f1)
-),
-f1, {{f, g, h}}, n) 
+/*得到线段f的三等分点序列*/
+equiSepSeq=Sequence(Point(f, v), v, 0, 1, 1 / 3) 
+/*插入Koch曲线的顶点*/
+kochSeqf=Insert(Rotate(Point(f, 1 / 3), π / 3, Point(f, 2 / 3)), equiSepSeq, 3)
+/*得到线段f的Koch曲线:一次迭代*/
+l1=Zip(Sequence(Segment(Element(lis, u), Element(lis, u + 1)), u, 1, 4), lis, {kochSeqf})
+/*注意这里的l1作为结果是从线段f构造出了四段线段（Koch曲线）*/
+/*迭代次数滑块*/
+n=Slider(2,5,1)
+/*想一想，下面这个迭代为什么不正确？*/
+IterationList(Flatten(Zip(Sequence(Segment(Element(lis, u), Element(lis, u + 1)), u, 1, 4), lis, {Insert(Rotate(Point(ff, 1 / 3), π / 3, Point(ff, 2 / 3)), Sequence(Point(ff, v), v, 0, 1, 1 / 3), 3)})), ff, {{f}}, n)
+/*这是因为，迭代一次后的结果为四个线段构成的列表{f1,f1,f1,f1}, 因此再次迭代的时候，ff变成了这个列表，而我们希望是一个线段构成的列表(类似{f1}这样)，因此我们需要再次使用Zip映射变量到列表中的元素*/
 /*最后一个迭代完整代码如下*/
-Element( IterationList( Flatten( Zip( Zip( Sequence( Segment( Element( l3, u), Element( l3, u+1)), u, 1, 4), l3, {Insert( Rotate( Point( ff, 2/3), -pi/3, Point( ff, 1/3)), Sequence( Point( ff, v), v, 0, 1, 1/3), 3)}), ff, f1)), f1, {{f, g, h}}, n), n)
+Element( IterationList( Flatten( Zip( Zip( Sequence( Segment( Element( lis, u), Element( lis, u+1)), u, 1, 4), lis, {Insert( Rotate( Point( ff, 2/3), -pi/3, Point( ff, 1/3)), Sequence( Point( ff, v), v, 0, 1, 1/3), 3)}), ff, f1)), f1, {{f, g, h}}, n), n)
 ```
 
 ![Koch曲线](figures/Koch.png)
@@ -218,9 +290,9 @@ Element( IterationList( Flatten( Zip( Zip( Sequence( Segment( Element( l3, u), E
 
 ---
 ### 作业
-1. 自行对勾股数等迭代图形涂色。
+1. 自行对勾股树等迭代图形涂色。
 2. 你能想到涂色的其他应用吗？
-3. (必做!!)**大作业**：对 Julia 集
+3. (必做!!)**大作业**：对 Julia 集使用几何画板实现。
 
 ---
 

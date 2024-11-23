@@ -140,3 +140,6 @@
  ![[_vimrc]]
 
 ---
+
+### 参考文献
+1. [How I'm able to take notes in mathematics lectures using LaTeX and Vim](https://castel.dev/post/lecture-notes-1/)
