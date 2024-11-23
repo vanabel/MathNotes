@@ -349,4 +349,376 @@ LATEX 提供了命令`\include`/`\input`用来在源代码里插入文件:
     ... % 用户自定义命令
     \end{titlepage}}
     ```
-    **大作业**： 根据西南大学学位论文规范，定制学位论文封面。参考[西南大学全日制本科学生毕业论文（设计）工作管理办法](http://ceie.swu.edu.cn/info/1047/2766.htm)
+    **大作业**： 根据西南大学学位论文规范，定制学位论文封面。参考[西南大学全日制本科学生毕业论文（设计）工作管理办法](http://ceie.swu.edu.cn/info/1047/2766.htm) 以及[西南大学学位论文封面](学位论文封面.pdf)， 一个示例可以参考：[SWU-Thesis-first-page.tex](SWU-Thesis-first-page.tex)
+
+#### 交叉引用
+交叉引用是 `LATEX` 强大的自动排版功能的体现之一。
+* 在能够被交叉引用的地方，如章节、公式、图表、定理等位置使用 `\label` 命令: 
+  ```tex
+  \label{⟨label-name⟩}
+  ```
+  之后可以在别处使用 `\ref` 或 `\pageref` 命令，分别生成交叉引用的编号和页码: 
+  ```tex
+  \ref{⟨label-name⟩} \pageref{⟨label-name⟩}
+  ```
+* `\label` 命令可用于记录各种类型的交叉引用，使用位置分别为:
+  * **章节标题**: 在章节标题命令 `\section` 等之后紧接着使用。
+  * ** 行间公式**: 单行公式在公式内任意位置使用; 多行公式在每一行公式的任意位置使用。 
+  * **有序列表**: 在 `enumerate` 环境的每个 `\item` 命令之后、下一个 `\item` 命令之前任意位置使用。 
+  * ** 图表标题**: 在图表标题命令 `\caption` 之后紧接着使用。
+  * **定理环境**: 在定理环境内部任意位置使用。
+#### 脚注和边注
+* 使用 `\footnote` 命令可以在页面底部生成一个脚注: `\footnote{⟨footnote⟩}`
+* 有些情况下(比如在表格环境、各种盒子内)使用 `\footnote` 并不能正确生成脚注。我们可以分两步进行，先使用 `\footnotemark` 为脚注计数，再在合适的位置用 `\footnotetext` 生成脚注。比如:
+  ```tex
+  \begin{tabular}{l}
+  \hline “天地玄黄，宇宙洪荒。日月盈昃，辰宿列张。”\footnotemark \\ \hline
+  \end{tabular}
+  \footnotetext{表格里的名句出自《千字文》。}
+  ```
+* 使用 `\marginpar` 命令可在边栏位置生成边注:
+  ```tex
+  \marginpar[⟨left-margin⟩]{⟨right-margin⟩}
+  ```
+  如果只给定了 `⟨right-margin⟩`，那么边注在奇偶数页文字相同; 如果同时给定了 `⟨left-margin⟩`，则 偶数页使用 `⟨left-margin⟩` 的文字。
+#### 特殊环境
+##### 列表
+* LATEX提供了有序列表(`enumerate`)和无序列表(`itemize`)环境。两者用法类似。都是用 `\item` 标明每个列表项。`enumerate` 环境会自动对列表项编号。
+* 其中 `\item` 可带一个可选参数，将有序列表的计数或者无序列表的符号替换成自定义的符号。
+* 列表可以嵌套使用，最多嵌套四层。
+  ```tex
+  \begin{enumerate}
+    \item An item.
+    \begin{enumerate}
+      \item A nested item.\label{itref}
+      \item[*] A starred item.
+    \end{enumerate}
+    \item Reference(\ref{itref}).
+  \end{enumerate}
+  ```
+* 关键字环境 `description` 的用法与以上两者类似，不同的是 `\item` 后的可选参数用来写关键字，以粗体显示，一般是必填的:
+  ```tex
+   \begin{description}
+    \item[Enumerate] Numbered list.
+    \item[Itemize] Non-numbered list.
+  \end{description}
+  ```
+* 各级无序列表的符号由命令 `\labelitemi` 到 `\labelitemiv` 定义，可以简单地重新定义它们:
+  ```tex
+  \renewcommand{\labelitemi}{\ddag}
+  \renewcommand{\labelitemii}{\dag}
+  \begin{itemize}
+    \item First item
+    \begin{itemize}
+      \item Subitem
+      \item Subitem
+    \end{itemize}
+    \item Second item
+  \end{itemize}
+  ```
+* 有序列表的符号由命令 `\labelenumi` 到 `\labelenumiv` 定义，重新定义这些命令需要用到计数器相关命令:
+  ```tex
+   \renewcommand{\labelenumi}%
+    {\Alph{enumi}>}
+  \begin{enumerate}
+    \item First item
+    \item Second item
+  \end{enumerate}
+  ```
+##### 对齐环境
+* `center`、`flushleft` 和 `flushright` 环境分别用于生成居中、左对齐和右对齐的文本环境。
+* 除此之外，还可以用以下命令直接改变文字的对齐方式: `\centering`、`\raggedright`、`\raggedleft`
+  ```tex
+  \centering
+  Centered text paragraph.
+  \raggedright
+  Left-aligned text paragraph.
+  \raggedleft
+  Right-aligned text paragraph.
+  ```
+##### 引用环境
+* `LATEX` 提供了两种引用的环境:
+  * `quote` 用于引用较短的文字，首行不缩进; 
+  * `quotation` 用于引用若干段文字，首行缩进。引用环境较一般文字有额外的左右缩进。
+* `verse` 用于排版诗歌，与 `quotation` 恰好相反，`verse` 是首行悬挂缩进的。
+##### 摘要环境
+摘要环境 `abstract` 默认只在标准文档类中的 `article` 和 `report` 文档类可用，一般用于紧跟 `\maketitle` 命令之后介绍文档的摘要。如果文档类指定了 `titlepage` 选项，则单独成页; 反之， 单栏排版时相当于一个居中的小标题加一个 `quotation` 环境，双栏排版时相当于 `\section*` 定义的一节。
+##### 代码环境
+有时我们需要将一段代码原样转义输出，这就要用到代码环境 `verbatim`，它以等宽字体排版代码，回车和空格也分别起到换行和空位的作用;带星号的版本更进一步将空格显示成“␣”。
+```tex
+\begin{verbatim}
+#include <iostream>
+int main()
+{
+  std::cout << "Hello, world!"
+            << std::endl;
+return 0; }
+\end{verbatim}
+```
+要排版简短的代码或关键字，可使用 `\verb` 命令:
+```tex
+\verb|\LaTeX| \\
+\verb+(a || b)+ \verb*+(a || b)+
+```
+#### 表格
+排版表格最基本的 `tabular` 环境用法为:
+```tex
+\begin{tabular}[⟨align⟩]{⟨column-spec⟩} 
+⟨item1⟩ & ⟨item2⟩ & ... \\
+\hline
+⟨item1⟩ & ⟨item2⟩ & ... \\
+\end{tabular}
+```
+直接使用 `tabular` 环境的话，会和周围的文字混排。此时可用一个可选参数 `⟨align⟩` 控制垂 直对齐:`t` 和 `b` 分别表示按表格顶部、底部对齐，其他参数或省略不写(默认)表示居中对齐。
+```tex
+\begin{tabular}{|c|}
+  center-\\ aligned \\
+\end{tabular},
+\begin{tabular}[t]{|c|}
+  top-\\ aligned \\
+\end{tabular},
+\begin{tabular}[b]{|c|}
+  bottom-\\ aligned\\
+\end{tabular} tabulars.
+```
+但是通常情况下 `tabular` 环境很少与文字直接混排，而是会放在 `table` 浮动体环境中，并用 `\caption` 命令加标题。
+##### 列格式
+`tabular` 环境使用 `⟨column-spec⟩` 参数指定表格的列数以及每列的格式。基本的列格式见表
+
+| 列格式| 说明|
+|:---|:---|
+| `l/c/r` | 单元格内容左对齐/居中/右对齐，不折行|
+| `p{⟨width⟩}`| 单元格宽度固定为 `⟨width⟩`，可自动折行|
+| `｜` | 绘制竖线|
+| `@{⟨string⟩}`|自定义内容 `⟨string⟩`|
+  > `@` 格式可在单元格前后插入任意的文本，但同时它也消除了单元格前后额外添加的间距。
+* 另外 `LATEX` 还提供了简便的将格式参数重复的写法 `*{⟨n⟩}{⟨column-spec⟩}`，比如以下两种 写法是等效的
+  ```tex
+  \begin{tabular}{|c|c|c|c|c|p{4em}|p{4em}|}
+  \begin{tabular}{|*{5}{c|}*{2}{p{4em}|}}
+  ```
+##### 列宽
+`tabularx`引入了一个 `X` 列格式，类似 `p` 列格式，不过会根据表格宽度自动计算列宽，多个 `X` 列格式平均分配列宽。
+  ```tex
+  % \usepackage{array,tabularx}
+  \begin{tabularx}{14em}%
+  {|*{4}{>{\centering\arraybackslash}X|}}
+    \hline
+    A & B & C & D \\ \hline
+    a & b & c & d \\ \hline
+  \end{tabularx}
+  ```
+##### 横线
+我们已经在之前的例子见过许多次绘制表格线的 `\hline` 命令。另外 `\cline{⟨i⟩-⟨j⟩}` 用来绘制跨越部分单元格的横线:
+```tex
+ \begin{tabular}{|c|c|c|}
+  \hline
+  4 & 9 & 2 \\ \cline{2-3}
+  3 & 5 & 7 \\ \cline{1-1}
+  8 & 1 & 6 \\ \hline
+\end{tabular}
+```
+在科技论文排版中广泛应用的表格形式是**三线表**，形式干净简明。三线表由 `booktabs` 宏包支持，它提供了 `\toprule`、`\midrule` 和 `\bottomrule` 命令用以排版三线表的三条线，以及和 `\cline` 对应的 `\cmidrule`。除此之外，最好不要用其它横线以及竖线:
+```tex
+% \usepackage{booktabs}
+\begin{tabular}{cccc}
+  \toprule
+   & \multicolumn{3}{c}{Numbers} \\
+  \cmidrule{2-4}
+           & 1 & 2 & 3 \\
+  \midrule
+  Alphabet & A & B & C \\
+  Roman    & I & II& III \\
+  \bottomrule
+\end{tabular}
+```
+##### 合并单元格
+* LATEX 是一行一行排版表格的，横向合并单元格较为容易，由 `\multicolumn` 命令实现:
+  ```tex
+  \multicolumn{⟨n⟩}{⟨column-spec⟩}{⟨item⟩}
+  ```
+* 纵向合并单元格需要用到 `multirow` 宏包提供的 `\multirow` 命令:
+  ```tex
+  \multirow{⟨n⟩}{⟨width⟩}{⟨item⟩}
+  ```
+* 一个结合 `\cline`、`\multicolumn` 和 `\multirow` 命令的例子:
+  ```tex
+  % \usepackage{multirow}
+  \begin{tabular}{ccc}
+    \hline
+    \multirow{2}{*}{Item} &
+      \multicolumn{2}{c}{Value} \\
+    \cline{2-3}
+      & First & Second \\ \hline
+    A & 1     & 2 \\ \hline
+  \end{tabular}
+  ```
+##### 行距控制
+LATEX 生成的表格看起来通常比较紧凑。修改参数 `\arraystretch` 可以得到行距更加宽松的表格:
+```tex
+ \renewcommand\arraystretch{1.8}
+\begin{tabular}{|c|}
+  \hline
+  Really loose \\ \hline
+  tabular rows.\\ \hline
+\end{tabular}
+```
+#### 图片
+`LATEX` 本身不支持插图功能，需要由 `graphicx` 宏包辅助支持。
+* 使用 `latex` + `dvipdfmx` 编译命令时，调用 `graphicx` 宏包时要指定 `dvipdfmx` 选项; 而使用 `pdflatex` 或 `xelatex` 命令编译时不需要。
+* 使用 `xelatex` 命令是我们最推荐的方式, 因为它支持的图片格式最多。
+* 插入图片命令`\includegraphics[⟨options⟩]{⟨filename⟩}`
+* `\graphicspath` 命令用于设置图片文件路径，设置后可以使用相对路径。
+  ```tex
+  % 假设主要的图片放在 figures 子目录下，标志放在 logo 子目录下
+  \graphicspath{{figures/}{logo/}}
+  ```
+* 在 `\includegraphics` 命令的可选参数 `⟨options⟩` 中可以使用 `⟨key⟩=⟨value⟩` 的形式，常用的参数如下:
+
+  | 参数                | 含义                                       |
+  |---------------------|--------------------------------------------|
+  | width=⟨width⟩     | 将图片缩放到宽度为⟨width⟩                |
+  | height=⟨height⟩   | 将图片缩放到高度为⟨height⟩                |
+  | scale=⟨scale⟩     | 将图片相对于原尺寸缩放 ⟨scale⟩ 倍        |
+  | angle=⟨angle⟩     | 将图片逆时针旋转 ⟨angle⟩ 度               |
+#### 盒子
+  盒子是 `LATEX` 排版的基础单元，虽然解释略有抽象: 每一行是一个盒子，里面的文字从左到右依次排列; 每一页也是一个盒子，各行文字从上到下依次排布⋯⋯颇有一些活字印刷术的味道。
+  LATEX 提供了一些命令让我们手动生成一些有特定用途的盒子。
+##### 水平盒子
+```tex
+ \mbox{...} %生成一个基本的水平盒子，内容只有一行，不允许分段
+ \makebox[⟨width⟩][⟨align⟩]{...} 
+```
+`\makebox` 更进一步，可以加上可选参数用于控制盒子的宽度 `⟨width⟩`，以及内容的对齐方式 `⟨align⟩`，可选居中 `c`(默认值)、左对齐 `l`、右对齐 `r` 和分散对齐 `s`。
+```tex
+|\mbox{Test some words.}|\\
+|\makebox[10em]{Test some words.}|\\
+|\makebox[10em][l]{Test some words.}|\\
+|\makebox[10em][r]{Test some words.}|\\
+|\makebox[10em][s]{Test some words.}|
+```
+一个实例是：
+```tex
+\makebox[12em][s]{本 科 毕 业 论 文 （ 设 计 ）}
+```
+##### 带框的水平盒子
+`\fbox` 和 `\framebox` 让我们可以为水平盒子添加边框。使用的语法与 \mbox 和 \makebox
+一模一样
+```tex
+\fbox{Test some words.}\\
+\framebox[10em][r]{Test some words.}
+```
+可以通过 `\setlength` 命令调节边框的宽度 `\fboxrule` 和内边距 `\fboxsep`:
+```tex
+\framebox[10em][r]{Test box}\\[1ex]
+\setlength{\fboxrule}{1.6pt}
+\setlength{\fboxsep}{1em}
+\framebox[10em][r]{Test box}
+```
+##### 垂直盒子
+如果需要排版一个文字可以换行的盒子，`LATEX` 提供了两种方式:
+```tex
+\parbox[⟨align⟩][⟨height⟩][⟨inner-align⟩]{⟨width⟩}{...}
+\begin{minipage}[⟨align⟩][⟨height⟩][⟨inner-align⟩]{⟨width⟩}
+...
+\end{minipage}
+```
+其中 `⟨align⟩` 为盒子和周围文字的对齐情况(类似 `tabular` 环境); `⟨height⟩` 和 `⟨inner-align⟩` 设置盒子的高度和内容的对齐方式，类似水平盒子 `\makebox` 的设置，不过 `⟨inner-align⟩` 接受的参数是顶部 `t`、底部 `b`、居中 `c` 和分散对齐 `s`。
+##### 标尺盒子
+`\rule` 命令用来画一个实心的矩形盒子，也可适当调整以用来画线(标尺):
+```tex
+\rule[⟨raise⟩]{⟨width⟩}{⟨height⟩}
+```
+例如：
+```tex
+Black \rule{12pt}{4pt} box.
+Upper \rule[4pt]{6pt}{8pt} and
+lower \rule[-4pt]{6pt}{8pt} box.
+A \rule[-.4pt]{3em}{.4pt} line.
+```
+#### 浮动体
+内容丰富的文章或者书籍往往包含许多图片和表格等内容。这些内容的尺寸往往太大，导致分页困难。`LATEX` 为此引入了浮动体的机制，令大块的内容可以脱离上下文，放置在合适的位置。
+```tex
+\begin{table}[⟨placement⟩] 
+...
+\end{table}
+\begin{figure}[⟨placement⟩] 
+...
+\end{figure}
+```
+`⟨placement⟩` 参数提供了一些符号用来表示浮动体允许排版的位置，如 `hbp` 允许浮动体排版在**当前位置**、**底部**或者**单独成页**。`table` 和 `figure` 浮动体的默认设置为 `tbp`。
+
+| 参数 | 含义                     |
+|------|--------------------------|
+| h    | 当前位置（代码所处的上下文） |
+| t    | 顶部                     |
+| b    | 底部                     |
+| p    | 单独成页                 |
+| !    | 在决定位置时忽视限制     |
+
+> 排版位置的选取与参数里符号的顺序无关.
+
+双栏排版环境下，`LATEX` 提供了 `table*` 和 `figure*` 环境用来排版跨栏的浮动体。它们的用法与 `table` 和 `figure` 一样，不同之处为双栏的 `⟨placement⟩` 参数只能用 `tp` 两个位置。
+##### 浮动体的标题
+图表等浮动体提供了 `\caption` 命令加标题，并且自动给浮动体编号。类似于 `\section` , 也有 `*` 版本, 以及可选参数设置短标题。
+
+`\caption` 生成的标题, 可通过修改 `\figurename` 和 `\tablename` 的内容来修改标题的前缀。
+
+`table` 和 `figure` 两种浮动体分别有各自的生成目录的命令:
+```tex
+\listoftables
+\listoffigures
+```
+它们类似 `\tableofcontents` 生成单独的章节。
+##### 并排和子图表
+我们时常有在一个浮动体里面放置多张图的用法。最简单的用法就是直接并排放置，也可以通过分段或者换行命令 `\\` 排版多行多列的图片。以下为示意代码.
+```tex
+%\usepackage{mwe}
+%\usepackage{graphicx}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{example-image-a}
+  \qquad
+  \includegraphics[width=0.45\textwidth]{example-image-b}\\[2em]
+  \includegraphics[width=0.9\textwidth]{example-image-duck}
+  \caption{Side-by-side and full-width images}
+\end{figure}
+```
+由于标题是横跨一行的，用 `\caption` 命令为每个图片单独生成标题就需要借助前文提到的 `\parbox` 或者 `minipage` 环境，将标题限制在盒子内。
+```tex
+\begin{figure}[htbp]
+  \centering
+  \parbox{0.45\textwidth}{
+  \includegraphics[width=0.45\textwidth]{example-image-a}
+  \caption{Image-A}}
+  \qquad
+  \parbox{0.45\textwidth}{
+  \includegraphics[width=0.45\textwidth]{example-image-b}
+  \caption{Image-B}}\\[2em]
+  \includegraphics[width=0.9\textwidth]{example-image-duck}
+  \caption{Side-by-side and full-width images}
+\end{figure}
+```
+当我们需要更进一步，给每个图片定义小标题时，就要用到 `subcaption` 宏包的功能了。
+```tex
+%\usepackage{subcaption} % 子图支持
+\begin{figure}[htbp]
+  \centering % 子图 1
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{example-image-a}
+    \subcaption{Image-A}
+  \end{subfigure}
+  \qquad
+  % 子图 2
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{example-image-b}
+    \subcaption{Image-B}
+  \end{subfigure}\\[2em]
+  \includegraphics[width=0.9\textwidth]{example-image-duck}
+  \caption{Side-by-side and full-width images}
+\end{figure}
+```
+### 排版数学公式
+
