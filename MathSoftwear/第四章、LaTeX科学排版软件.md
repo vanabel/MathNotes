@@ -581,6 +581,15 @@ LATEX 生成的表格看起来通常比较紧凑。修改参数 `\arraystretch` 
   | height=⟨height⟩   | 将图片缩放到高度为⟨height⟩                |
   | scale=⟨scale⟩     | 将图片相对于原尺寸缩放 ⟨scale⟩ 倍        |
   | angle=⟨angle⟩     | 将图片逆时针旋转 ⟨angle⟩ 度               |
+  
+  ```latex
+  \begin{figure}
+    \centering
+    \includegraphics[scale=0.1, angle=90, origin=b]{example-image-a}
+    \caption{Example Image A}
+    \label{fig:example-A}
+  \end{figure}
+  ```
 #### 盒子
   盒子是 `LATEX` 排版的基础单元，虽然解释略有抽象: 每一行是一个盒子，里面的文字从左到右依次排列; 每一页也是一个盒子，各行文字从上到下依次排布⋯⋯颇有一些活字印刷术的味道。
   LATEX 提供了一些命令让我们手动生成一些有特定用途的盒子。
@@ -727,7 +736,7 @@ A \rule[-.4pt]{3em}{.4pt} line.
 #### 公式排版基础
 * 行内和行间公式
   * **行内公式**：与文字混排，用 `\(...\)` 包裹。
-  * **行间公式**：单独成行，用 `\[...\]` 环境包裹。
+  * **行间公式**：单独成行，用 `\[...\]` 环境包裹。`\begin{equation}...\end{equation}`, 产生编号的公式。
 
 > 进入数学模式后，空格被忽略，间距由符号性质决定。
 > 不允许空行，无法用 `\\` 手动换行。
@@ -813,15 +822,79 @@ A \rule[-.4pt]{3em}{.4pt} line.
 #### 字体样式和字号
 * `LATEX` 提供了两组修改字体的命令，全局影响和局部影响。
 * 全局命令如 `\bfseries` 会影响之后所有的字符，局部命令如 `{\bfseries some text}` 只改变特定文本。
+  
+  | 命令          | 变体命令       | 效果       | 中文描述          |
+  | ------------- | -------------- | ---------- | ----------------- |
+  | \rmfamily     | \textrm{...}   | roman      | 衬线字体(罗马体) |
+  | \sffamily     | \textsf{...}   | sans serif | 无衬线字体       |
+  | \ttfamily     | \texttt{...}   | typewriter | 等宽字体         |
+  | \mdseries     | \textmd{...}   | medium     | 正常粗细(中等)   |
+  | \bfseries     | \textbf{...}   | bold face  | 粗体             |
+  | \upshape      | \textup{...}   | upright    | 直立体           |
+  | \itshape      | \textit{...}   | italic     | 意大利斜体       |
+  | \slshape      | \textsl{...}   | slanted    | 倾斜体           |
+  | \scshape      | \textsc{...}   | SMALL CAPS | 小型大写字母     |
+  | \em           | \emph{...}     | emphasized | 强调，默认斜体   |
+  | \normalfont   | \textnormal{...}| normal font| 默认字体         |
+
 * 公式中的字体命令，如 `\mathbf`，用于修改数学字母样式。
 * 字号命令的实际大小依赖于文档类及其选项。
+
+  <div style="text-align:center">标准文档类中字体大小</div>
+
+  | 字号          | 10pt选项(默认) | 11pt选项  | 12pt选项  |
+  | ------------- | -------------- | --------- | --------- |
+  | \tiny         | 5pt            | 6pt       | 6pt       |
+  | \scriptsize   | 7pt            | 8pt       | 8pt       |
+  | \footnotesize | 8pt            | 9pt       | 10pt      |
+  | \small        | 9pt            | 10pt      | 10.95pt   |
+  | \normalsize   | 10pt           | 10.95pt   | 12pt      |
+  | \large        | 12pt           | 12pt      | 14.4pt    |
+  | \Large        | 14.4pt         | 14.4pt    | 17.28pt   |
+  | \LARGE        | 17.28pt        | 17.28pt   | 20.74pt   |
+  | \huge         | 20.74pt        | 20.74pt   | 24.88pt   |
+  | \Huge         | 24.88pt        | 24.88pt   | 24.88pt   |
 * 使用字号命令时，通常需要用花括号进行分组。
   ```latex
   {\small The small and \textbf{bold} Romans ruled}
   {\Large all of great big {\itshape Italy}.}
   ```
+* `\fontsize{⟨size⟩}{⟨base line-skip⟩}` 用到两个参数，`⟨size⟩` 为字号，`⟨base line-skip⟩` 为基础行距，一般设置为字号的 1.2 倍。如果不是在导言区，`\fontsize` 的 设定需要 `\selectfont` 命令才能立即生效。
 * 选用字体宏包
   * 常用的字体宏包如 `lmodern`、`cmbright`、`euler` 等，提供了不同的字体风格。
+    <div align="center"> 常见的LaTeX 字体宏包</div>
+
+    | |文本/数学字体搭配的宏包  |
+    | --- | --- |
+    | Imodern | Latin Modern字体,对 Computer Modern字体的扩展 |
+    | cmbright | 仿Computer Modern风格的无衬线字体 |
+    | euler | Euler风格数学字体,也出自于高德纳之手 |
+    | ccfonts | Concrete风格字体 |
+    | txfonts | Times风格的字体宏包 |
+    | pxfonts | Palatino风格的字体宏包 |
+    | stix | Times风格的字体宏包 |
+    | newtxtext,newtxmath | txfonts的改进版本,分别设置文本和数学字体 |
+    | newpxtext,newpxmath | pxfonts的改进版本,分别设置文本和数学字体 |
+    | mathptmx | psnfss字体宏集之一,Times风格,较为陈旧,不推荐使用 |
+    | mathpazo | psnfss字体宏集之一,Palatino风格,较为陈旧,不推荐使用 |
+    | fourier | Fourier风格数学字体,配合Utopia正文字体 |
+    | fouriernc | Fourier风格数学字体,配合New Century Schoolbook正文字体 |
+    | arev | Arev无衬线字体宏包,Vera Sans风格 |
+    | mathdesign | 配合Charter/Garamond/Utopia正文字体的数学字体宏包 |
+    | | **文本字体宏包** |
+    | cm-unicode | Computer Modern风格的 Unicode字体,支持多种西方语言 |
+    | dejavu | DejaVu开源字体 |
+    | droid | Droid开源字体 |
+    | inconsolata | Inconsolata开源等宽字体 |
+    | libertine | Linux Libertine和 Linux Biolium开源字体 |
+    | roboto | Roboto开源无衬线字体 |
+    | sourcesanspro | Source Sans Pro开源无衬线字体 |
+    | sourcecodepro | Source Code Pro开源等宽字体 |
+    || **符号宏包**  |
+    | mathabx | 数学符号宏包之一 |
+    | MnSymbol | 数学符号宏包之一, 配合Minion Pro文本字体 |
+    | fdsymbol | 数学符号宏包之一 |
+    | pifont | Zapf Dingbats符号宏包 |
   * 字体编码如 OT1 和 T1，T1 字体编码更接近 ASCII 文本编码。
     ```latex
     \usepackage[T1]{fontenc}
@@ -830,41 +903,109 @@ A \rule[-.4pt]{3em}{.4pt} line.
   * `xelatex` 和 `lualatex` 编译命令支持直接调用系统中的 `.ttf` 或 `.otf` 格式字体。
   * `fontspec` 宏包提供了设置全局字体的命令。
     ```latex
-    \setmainfont{Times New Roman}
+	\setmainfont{⟨font name⟩}[⟨font features⟩]
+	\setsansfont{⟨font name⟩}[⟨font features⟩]
+	\setmonofont{⟨font name⟩}[⟨font features⟩]
     ```
+	例如
+    ```latex
+    \setmainfont{Times New Roman}
+    \setsansfont{Arial}[BoldFont={Arial Bold}, ItalicFont={Arial Italic}]
+    ```
+    > 需要注意的是，`fontspec` 宏包会覆盖数学字体设置。需要调用一些数学字体宏包时，应当在调用 `fontspec` 宏包时指定 `no-math` 选项。`fontspec` 宏包可能被其它宏包或文档类(如 `ctex` 文档类)自动调用时，则在文档开头的 `\documentclass` 命令里指定 `no-math` 选项。
 * 更改中文字体
   * `ctex` 宏包或文档类提供了设置中文字体的命令。
     ```latex
-    \setCJKmainfont{SimSun}
+    \setCJKmainfont{⟨font name⟩}[⟨font features⟩]
+    \setCJKsansfont{⟨font name⟩}[⟨font features⟩]
+    \setCJKmonofont{⟨font name⟩}[⟨font features⟩]
+    %例如
+    \setCJKmainfont{SimSun}[BoldFont=SimHei, ItalicFont=KaiTi]
     ```
 * 使用 `unicode-math` 宏包配置 Unicode 数学字体
   * `unicode-math` 宏包允许调用 Unicode 数学字体配置数学公式的字体风格。
     ```latex
-    \usepackage{unicode-math}
+    %\usepackage{unicode-math}
+    \setmathfont{⟨font name⟩}[⟨font features⟩]
     \setmathfont{Latin Modern Math}
     ```
+    <div align="center">常用 Unicode 数学字体<div>
+    
+    | 数学字体名称         | 配套正文字体名称       | 备注                                       |
+    | ------------------- | ---------------------- | ------------------------------------------ |
+    |                    | 开源字体, 发布于CTAN    |                       |
+    | Latin Modern Math   | Latin Modern           | 基于 Computer Modern 风格                  |
+    | STIX Math           | STIX                   | Times 风格                                 |
+    | XITS Math           | XITS                   | 基于 STIX, Times 风格, 有粗体 XITS Math Bold 可用 |
+    | TeX Gyre Pagella Math | TeX Gyre Pagella     | Palatino 风格                              |
+    | TeX Gyre Termes Math | TeX Gyre Termes       | Times 风格                                 |
+    | TeX Gyre DejaVu Math | DejaVu Serif          | DejaVu 风格                                |
+    | Libertinus Math     | Libertinus             | Linux Libertine 风格                       |
+    | Garamond Math       | EB Garamond            | Garamond 风格                              |
+    | Fira Math           | Fira Sans              | 无衬线数学字体                             |
+    |                    | 商业字体                |                                        |
+    | Cambria Math        | Cambria                | 微软 Office 预装的数学字体                 |
+    | Lucida Bright Math OT | Lucida Bright OT      | 须购买商业授权                             |
+    | Minion Math         | Minion Pro             | 须购买商业授权                             |
 * 文字装饰和强调
-  * 使用 `\underline` 命令为文字添加下划线，`ulem` 宏包提供了更灵活的下划线解决方案。
+  * 使用 `\underline` 命令为文字添加下划线(不自动换行)，`ulem` 宏包提供了更灵活的下划线解决方案。
   * `\emph` 命令将文字变为斜体以示强调。
+  * 中文下划线: `\CJKunderline{text}`
+  * 中文下波浪线: `\CJKunderwave{text}`
 
 #### 段落格式和间距
 * 长度和长度变量
+  * 设置长度变量`\newlength{\⟨length command⟩}`
   * 长度的数值由数字和单位组成，如 `12pt`、`1.5cm`。
+  <div align="centre">TEX/LATEX 中的长度单位</div>
+
+  | 单位 | 描述 |
+  | --- | --- |
+  | pt  | 点 (point, 也译作“磅”), = 1/72.27 in |
+  | bp  | 大点 (big point), = 1/72 in |
+  | in  | 英寸, = 2.54 cm |
+  | cm  | 厘米 |
+  | mm  | 毫米 |
+  | em  | 大致相当于当前字号下大写字母 M 的宽度, 常用于设定水平距离 |
+  | ex  | 大致相当于当前字号下小写字母 x 的高度, 常用于设定垂直距离 |
+  | mu  | 数学单位 (math unit), = 1/18 em |
   * 弹性长度如 `12pt plus 2pt minus 3pt` 表示基础长度为 12pt，可以伸展或收缩。
 * 行距
   * `\linespread{factor}` 命令用于设置行距。
+  > * 如果不是在导言区全局修改，而想要局部地改变某个段落的行距，需要用 `\selectfont` 命令使 `\linespread` 命令的改动立即生效
+  > * 字号的改变是即时生效的，而行距的改变直到文字分段时才生效。
 * 段落格式
   * `\setlength` 和 `\addtolength` 命令用于设置和增加段落缩进、间距等。
     ```latex
+    %以下长度分别为段落的左缩进、右缩进和首行缩进:
+    \setlength{\leftskip}{⟨length⟩}
+    \setlength{\rightskip}{⟨length⟩}
+    \setlength{\parindent}{⟨length⟩}
+    %例如
     \setlength{\parindent}{20pt}
+    ```
+    段落间的垂直间距为 `\parskip`，如设置段落间距在 0.8ex 到 1.5ex 变动:
+    ```latex
+    \setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
     ```
 * 水平间距
   * `\hspace` 命令用于插入额外的水平间距。
+  > `\hspace` 命令生成的水平间距如果位于一行的开头或末尾，则有可能因为断行而被舍弃。可使用 `\hspace*` 命令代替 `\hspace` 命令得到不会因断行而消失的水平间距。
+  * 命令 `\stretch{⟨n⟩}` 生成一个特殊弹性长度，参数 `⟨n⟩` 为权重。它的基础长度为 `0pt`，但可以无限延伸，直到占满可用的空间。如果同一行内出现多个 `\stretch{⟨n⟩}`，这一行的所有可用空间将按每个 `\stretch` 命令给定的权重 `⟨n⟩ `进行分配。
+  * 命令 `\fill` 相当于 `\stretch{1}`
+    ```latex 
+    x\hspace{\stretch{1}}
+    x\hspace{\stretch{3}}
+    x\hspace{\fill}x
+    ```
 * 垂直间距
   * `\vspace` 命令用于增加段落之间的垂直间距。
+  * `\vspace` 命令生成的垂直间距在一页的顶端或底端可能被“吞掉”，类似 `\hspace` 在一行的开头和末尾那样。对应地，`\vspace*` 命令产生不会因断页而消失的垂直间距。`\vspace` 也可用 `\stretch` 设置无限延伸的垂直长度。
+  * 另外 LATEX 还提供了`\bigskip`, `\medskip`, `\smallskip` 来增加预定义长度的垂直间距。
+
 #### 页面和分栏
 * 页面参数
-  * 使用 `\setlength` 命令可以修改页面尺寸和边距。
+  * 使用 `\setlength` 命令可以修改页面尺寸和边距, ![页面边距图](页面边距图.png)
 * 使用 `geometry` 宏包设置页面参数
   * `geometry` 宏包提供了简便的方法设置页面参数。
     ```latex
@@ -872,9 +1013,10 @@ A \rule[-.4pt]{3em}{.4pt} line.
     \geometry{a4paper,left=1.25in,right=1.25in,top=1in,bottom=1in}
     ```
 * 页面内容的垂直对齐
-  * `\raggedbottom` 和 `\flushbottom` 命令分别用于设置页面内容的垂直对齐。
+  * `\raggedbottom` 和 `\flushbottom` 命令分别用于设置页面内容的垂直方向向顶部对齐/分散对齐。
 * 分栏
   * `multicol` 宏包提供了简单的多栏排版解决方案。
+  > `multicol` 宏包能够在一页之中切换单栏/多栏，也能处理跨页的分栏，且各栏的高度分布平衡。但代价是在 `multicols` 环境中无法正常使用 `table` 和 `figure` 等浮动体环境，它会直接让浮动体丢失。`multicols` 环境中只能用跨栏的 `table*` 和 `figure*` 环境，或者用 `float` 宏包提供的 `H` 参数固定浮动体的位置。
 #### 页眉页脚
 * 基本的页眉页脚样式
   * `\pagestyle` 和 `\thispagestyle` 命令用于修改页眉页脚的样式。
@@ -1001,3 +1143,454 @@ A \rule[-.4pt]{3em}{.4pt} line.
     ```latex
     \hypersetup{pdftitle={My Document}, pdfauthor={Author Name}}
     ```
+
+### LaTeX 高级排版
+
+#### 多文档管理与引用
+
+##### 使用subfile管理多文档
+当涉及到 LaTeX 中的多文档管理与引用时，通常可以使用 subfiles 包来帮助组织和管理不同部分的文档。以下是一个简单的示例框架，展示了如何使用 subfiles 包在主文件和子文件之间进行协作。
+
+我们用到的目录结构如下：
+
+```bash
+project/
+├── main.tex
+├── secs/section1.tex
+└── secs/section2.tex
+```
+
+首先，确保你的主文件和子文件都在同一目录下，并安装了 subfiles 包（如果未安装，可以通过 LaTeX 发行版的包管理器进行安装）。
+
+###### 主文件代码示例
+```tex
+\documentclass{ctexart}
+\usepackage{subfiles}
+\newcommand{\autoref}[1]{第\ref{#1}节}
+
+\title{多文档管理与引用示例}
+\author{你的名字}
+
+\begin{document}
+\maketitle
+\section{引言}
+这是主文件的引言部分。
+
+\subfile{secs/section1.tex} % 导入子文件section1.tex
+\subfile{secs/section2.tex} % 导入子文件section2.tex
+\end{document}
+```
+
+###### 子文件（section1.tex）代码示例
+```tex
+% secs/section1.tex
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\section{第一节标题}
+\label{sec:section1}
+这是第一节的内容。可以在这里引用其他部分的内容， 如第二节的内容可以用\autoref{sec:section2} 来引用。
+\end{document}
+```
+
+###### 子文件（section2.tex）代码示例
+```tex
+% secs/section2.tex
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\section{第二节标题}
+\label{sec:section2}
+这是第二节的内容。可以在这里引用第一节的内容， 如第一节的内容可以用\autoref{sec:section1} 来引用。
+\end{document}
+```
+
+编译命令如下：
+```bash
+/* 编译主文件 */
+pdflatex main.tex
+/* 单独编译section1.tex */
+cd secs
+pdflatex section1.tex
+/* 单独编译section2.tex */
+pdflatex section2.tex
+```
+注意：单独编译时会导致交叉引用不能正确显示。
+
+#### 算法与源代码排版
+
+##### 算法排版
+
+```tex
+\documentclass{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+
+\begin{algorithm}
+\caption{Euclidean Algorithm}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
+\State $r \gets a \bmod b$
+\While{$r \neq 0$}
+\State $a \gets b$
+\State $b \gets r$
+\State $r \gets a \bmod b$
+\EndWhile
+\State \textbf{return} $b$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+As shown in Algorithm~\ref{euclid}, this is the Euclidean algorithm for finding the greatest common divisor.
+
+\end{document}
+```
+
+在这个示例中，我们定义了一个名为“Euclidean Algorithm”的算法，并使用了 `\Procedure` 和 `\EndProcedure` 来定义算法的开始和结束。`\Comment` 用于添加注释，`\State` 表示算法的每一步操作，`\While` 和 `\EndWhile` 用于循环结构。
+
+#### 源代码排版
+
+首先，我们需要利用 `pip` 来安装代码高亮的编译器和样式表：
+
+```bash
+pip install pygments pygments-mathematica
+```
+
+然后可以在导言区引入 `minted` 宏包：
+
+```tex
+\usepackage{minted}
+\usemintedstyle{mathematica} % 选择代码高亮风格
+```
+
+在正文中就可以排版代码，注意在编译的时候需要添加 `-shell-escape` 选项来允许 `minted` 执行外部命令：
+
+```bash
+\begin{minted}{wolfram}
+  (* Mathematica code *)
+  N[Pi, 50];
+  Table[i^2, {i, 1, 5}]
+\end{minted}
+```
+
+### 论文模板制作
+
+#### 将常用命令打包成一个package
+
+```tex
+% mytemplate.sty
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mytemplate}[2024/06/19 My LaTeX Template]
+
+% Load packages with options
+\usepackage[scheme=chinese, zihao=-4, heading=true]{ctex}
+
+% Define environment
+\newenvironment{enabstract}
+{\renewcommand{\abstractname}{Abstract}%
+\begin{abstract}}%
+{\end{abstract}}
+
+\endinput
+```
+
+将其保存为 `mytemplate.sty`, 然后可以像一个宏包一样正常使用。
+
+```tex
+\documentclass{book}
+\usepackage{mytemplate}
+
+\begin{document}
+测试包文件
+\end{document}
+```
+
+#### 创建一个类文件
+
+```tex
+% myclass.cls
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{myclass}[2024/06/19 v1.0 My custom LaTeX document class]
+
+\LoadClass[12pt]{ctexart}
+
+\DeclareOption{a4paper}{
+  \PassOptionsToClass{a4paper}{ctexart}
+}
+
+\ProcessOptions
+
+\ifx\pdfpagewidth\undefined
+  \paperwidth=210mm
+  \paperheight=297mm
+\else
+  \paperwidth=\pdfpagewidth
+  \paperheight=\pdfpageheight
+\fi
+
+\endinput
+```
+
+将其保存为 `myclass.cls`，我们可以这样使用：
+
+```tex
+\documentclass[a4paper]{myclass}
+\usepackage{geometry}
+\begin{document}
+纸张宽度为\the\paperwidth, 我定义的长度为\the\mylength.
+\end{document}
+```
+
+### 实践作业
+
+- 使用在线表格生成器，帮助生成 LaTeX 表格：[Tables Generator](https://www.tablesgenerator.com)
+- 自学代码作图Tikz/Metapost. 例如，使用在线MetaPost预览，画一个半径为2cm的圆，并标注圆心 $O$. [MetaPost Preview](http://www.tlhiv.org/mppreview/)
+  ```metapost
+  draw fullcircle scaled 2cm;
+  dotlabel.lrt(btex $O$ etex, origin);
+  ```
+- 下载并编译中国科学技术大学的毕业论文模板：[USTC Thesis](https://github.com/ustctug/ustcthesis)
+- 下载并编译全国大学生数学建模竞赛模板：[CUMCM Thesis](https://github.com/latexstudio/CUMCMThesis)
+- 下载并编译美国大学生数学建模竞赛模板：[MCM Thesis](https://github.com/latexstudio-org/mcmthesis)
+
+### LaTeX 在学术写作中的应用
+
+#### 学术写作规范
+
+##### 基本原则
+
+- 不要抄袭任何已经发表的、未发表但不是你创作的、或者网络上搜索到的文字
+- 不要“复制粘贴”网络上的或者论文中的图片
+
+上述两条非常容易导致查重率偏高。
+> 查重率和分数直接相关。
+  * 毕业论文最终成绩一律按优秀（90及以上）、良好（80-89）、中等（70-79）、及格（60-69）、不及格（60以下）五级评定。
+  * 评定``优秀''成绩的学生论文的查重率不超过20\%，且学生人数原则上不超过本专业毕业学生总数的30\%；
+  * 评定``良好''成绩的学生论文的查重率不超过25\%，且学生人数一般不超过本专业学生总数的50\%。
+
+##### 主要结构以及要点
+
+###### 题目
+- 简洁、副标题慎重选择
+- 如果最终题目和开题提交的题目不吻合，切记在终稿查重之前提交题目变更申请, 否则需要自费查重。
+- 作者、单位写法要规范；
+- 检查指导教师姓名是否正确。
+
+
+###### 摘要
+* 摘要必须简洁，一般写一段话即可
+* 按照研究背景、研究意义价值、研究难点、研究内容（模型）、研究结果与反思的顺序，每点写1-2句话。
+* 英文摘要一般是中文摘要的翻译，当慎用百度翻译，必须自己检查一遍。
+* 关键词一般3-5个，中英文对照。一般用分号隔开，英文首字母大写。
+
+###### 论文结构与目录
+
+1. 绪论（Introduction）
+   - 研究背景
+   - 研究目标
+   - 研究方法、路径
+2. 文献综述（Literature Survey）
+3. 研究内容（Research Contents）可以分多个章节
+4. 总结与展望（Conclusions and Further Development）
+5. 参考文献（Bibliography）
+6. 致谢（Acknowledgments）
+7. 附录（Appendices）
+
+###### 段落写作要点
+各个章节都按照这样的段落来写：
+  - 每段只写一个主要意思
+  - 每段按照总-分、总-分-总展开。 前面1-2句是主题句、后面3-4句是展开。
+  - 调整语序、注意段落衔接、长短句结合。
+  - 一个段落差不多$1/3$页面长度，调整文字长度、图表大小、不要大片空白。
+  - 使用书面用语、语法正确、用词简洁。
+
+###### 研究背景
+- 已有文献综述（历史文献中一般有背景）；
+- 提出自己的问题（研究动机）；
+- 目前根自己问题相关的研究（研究现状）；
+- 现有研究方法的不足、你的创新（研究意义）。
+
+###### 研究目标
+根据你提的问题，提出研究目标。
+
+* 简介研究目标。（介绍问题的定义和研究目标）
+* 简介研究内容。（介绍你研究哪些具体问题）
+* 研究意义总结。（介绍研究意义）
+* 本文组织架构。（介绍每章节内容）
+
+
+###### 文献综述
+相关工作这一章应该包含12-20篇不同的引用文献，大部分的文献应该是发表于正式的刊物上，至少包含5篇近3年发表在核心期刊和会议的论文。至少包括两篇英文文献。
+- 介绍和本论文相关的至少两个类别的研究领域。
+- 每个类别按照如下结构，按照时间先后顺序进行梳理。
+  - 早期工作
+  - 近期工作
+  - 相关工作总结与不足
+
+
+###### 文献引用
+凡是用到了别人的观点、提到了别人的名字、参考了别人的图、引用了别人的数据，或者是希望读者去看别人已发表的论文，都需要引用。
+
+下面的引用举例：
+- CNN模型近年来成功应用在图像识别中[2,3,4,5]。
+- 放到句末：近年来,已有一些研究人员尝试使用了矩阵分解框架[1-3]。
+- 用作者名字：Li 等人[7]提出使用矩阵分解算法。
+- 用文献：在文献[10]中使用了矩阵分解算法。
+- 直接使用模型名字：MF[9]分解用户评分矩阵。
+- 直接引述观点：使用社交网络关系被证明能提高推荐的准确度[5]。
+
+凡是图片参考了别人的论文重新绘制，或者直接使用了来自别人论文的论文，必须在图表标题上写明：
+- 图1. xxx, 参考[1]绘制；
+- 图2. xxx, 图片来自[2].
+
+此外，
+- 正文中提到的文献都需要用上标或者方框进行标注。采用人名或者参考文献出现的顺序排序。
+- 如果引用的是网址，一般用脚注。
+- 外国人名、模型方法名、一般不翻译成中文。
+###### 参考文献
+* 参考文献严格按照`GB/T 7714－2005`规则，使用`CNKI`等专业数据库导出参考文献（`bibtex`数据）。
+* 在`LaTeX` 中使用`bibtex`等参考文献排版工具。
+
+##### 数学符号的书写
+- 数学比较贵，需要用美元符号包起来：a与$a$与$\alpha$, $log$与$\log,\ln$, $sin^2$与$\sin^2$;
+- 数学公式后面（包括独立成行的公式）需要根据行文确定标点符号，一律用英文。
+- 阿拉伯数字和字母一般用半角，占半个汉字位置。
+  十以内的数字用汉字，如五；十以上的数字用阿拉伯数字，如15；
+  后面带单位、符号的用阿拉伯数字，如4.1\%；
+  表示序号的用阿拉伯数字，如图1;
+  一句话不以阿拉伯数字开头，如果开头要用汉字。
+#### 调查问卷表
+##### 问卷设计
+问卷目的: 明确问卷的目标，例如：
+- 了解学生对数学课程的满意度。
+- 探讨学生在数学学习中的困难。
+- 收集学生对数学教学方法的反馈。
+- 研究学生在数学学习中的时间投入和成绩之间的关系。
+##### 问题类型
+- **背景信息**（如性别、年龄、年级等）：
+  ```txt
+  1. 您的性别是？
+	 a. 男
+	 b. 女
+  ```
+- **选择题**（单选、多选）：
+  ```txt
+  2. 您对数学课程的总体满意度如何？
+	 A. 非常满意
+	 B. 满意
+	 C. 一般
+	 D. 不满意
+  ```
+- **量表题**（李克特量表，如1-5分）：
+  ```txt
+	3. 您认为数学课的教学内容是否适中？
+	   1 - 非常不适中
+	   2 - 不适中
+	   3 - 一般
+	   4 - 适中
+	   5 - 非常适中
+  ```
+- 开放式问题
+  ```txt
+  4. 您认为数学课程中最困难的部分是什么？请具体说明。
+  ```
+##### 问卷结构
+- **介绍**：简要说明问卷的目的和重要性，告知问卷保密性。
+- **背景信息**：收集基本人口统计信息。
+- **主体部分**：围绕研究目标设计的问题。
+- **感谢语**：感谢参与者的时间和配合。
+##### 计算方法
+
+数据整理：
+* ** 数据输入**：将问卷数据输入到电子表格或统计软件中，如Excel、SPSS、R等。
+* **编码**：对定性数据进行编码，例如将“男”编码为1，“女”编码为2。
+
+描述性统计:
+- **频数分布**：计算每个选项的频数和百分比。
+- **集中趋势**：计算均值、中位数、众数。
+- **离散趋势**：计算标准差、方差、范围。
+
+推断性统计：
+- **假设检验**：如t检验、卡方检验，检验不同组别间的差异。
+- **相关分析**：如皮尔逊相关系数，分析变量间的相关性。
+##### 结果分析（统计公式）
+* 描述性统计公式:
+  - **均值（Mean）**：
+	$$
+	  \bar{X} = \frac{\sum_{i=1}^n X_i}{n}
+	$$
+  - **标准差（Standard Deviation）**：
+	$$
+		s = \sqrt{\frac{\sum_{i=1}^n (X_i - \bar{X})^2}{n-1}}
+	$$
+* 推断性统计公式:
+  * **t检验**
+  适用于比较两组样本的均值是否存在显著差异。例如，可以用于比较男生和女生对数学课程满意度的平均值。
+  $$
+  t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}}
+  $$
+  其中，$\bar{X}_1$ 和 $\bar{X}_2$ 是两组样本的均值，$s_1$ 和 $s_2$ 是样本的标准差，$n_1$ 和 $n_2$ 是样本大小。
+
+
+  * **卡方检验 (Chi-Square Test)**
+  用于检验实际观测值与理论预期值之间是否存在显著差异。
+  $$
+  \chi^2 = \sum \frac{(O_i - E_i)^2}{E_i}
+  $$
+  其中，$O_i$ 是观察频数，$E_i$ 是期望频数。自由度 $df = \text{分类总数} - 1$，即分类总数减一。
+
+  * **相关系数 (Correlation Coefficient)**
+	用于测量两个变量之间的线性关系强度。例如，可以分析学习时间与数学成绩之间的相关性。
+	$$
+	r = \frac{\sum (X_i - \overline{X})(Y_i - \overline{Y})}{\sqrt{\sum (X_i - \overline{X})^2 \sum (Y_i - \overline{Y})^2}}
+	$$
+	其中：
+	  - $X_i$ 和 $Y_i$ 是两个变量的观测值。
+	  - $\overline{X}$ 和 $\overline{Y}$ 是两个变量的平均值。
+
+##### 图表分析
+
+利用图表展示数据，并对结果进行说明与分析，以下是步骤与注意事项：
+
+1. **图表说明**  
+   - 表 X 展示了 xxx 的结果。
+   - 对比分析，提供具体数值或比例。
+
+2. **分析原因**  
+   - 解释结果的优劣。例如：说明为何某方法效果更好或更差。
+
+###### 图表注意事项
+
+- **高清图片**：请使用无水印的高清图片，避免网络截图。  
+- **大小合适**：图表在打印后文字和线条应保持清晰。  
+- **避免空白**：图片内不要留过多空白区域。  
+- **表格格式**：
+  - 使用三线表格式（无竖线）。
+  - 保持单元格对齐方式统一。
+#### 检查清单
+* 页码是否正常显示？论文最后是否有不想关的表格？
+* 是否有错别字、句子是否通顺、语法是否正确？
+* 标点符号:
+  * 编号文本后面是否有句号或分号？
+  * 长图表标题需要有句号，短的不需要。
+  * 公式标点符号: 公式后面有解释用逗号，否则用句号。多行公式，各个公式之间用逗号。都用英文标点。
+  * 数学名词缩写在第一次出现时应该写出全称。
+  * 重要公式独立编号，多行公式共享一个编号。
+
+#### 毕业论文撰写指导
+##### 毕业论文撰写的一些建议
+###### 如何选题
+- **构思主题**：从自己最感兴趣的一门学科入手，尝试构思研究方向。
+- **查找文献**：利用 CNKI、万方等专业数据库进行检索，寻找相关领域的研究成果。
+- **确定主题**：根据阅读的文献，逐步聚焦具体研究问题。
+- **与导师沟通**：在初步选定主题和研究思路后，与指导老师讨论并确定最终方向。
+- **撰写初稿**：完成论文初稿后，再次与导师沟通，持续优化内容和结构。
+###### 如何阅读文献
+- **快速浏览**：
+  1. 首先阅读摘要，了解文章核心内容。
+  2. 然后查看主要结论，明确研究成果和创新点。
+  3. 最后关注细节和背景部分，深入理解相关理论与方法。
+
+- **有效标注**：总结文献的主要结论，标记重要内容与关键思路。
+
+- **重点理解**：聚焦文献中关键部分，确保对核心理论与方法的深入理解。
