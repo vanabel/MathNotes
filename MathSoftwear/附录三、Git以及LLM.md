@@ -259,7 +259,10 @@ git commit -m "Initial commit"
    pyenv local 3.11.9-win32
    python --version
    python -m venv venv
+   //windows
    .\venv\Scripts\activate
+   //mac
+   source venv/bin/activate
    pip config set global.index-url https://pypi.mirrors.ustc.edu.cn/simple/
    pip install streamlit
    ```
